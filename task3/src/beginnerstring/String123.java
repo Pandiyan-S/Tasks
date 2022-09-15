@@ -128,7 +128,8 @@ public class String123
 	public String reverse(String line) throws UserException
 	{
 		char[] str1 = toCharArr(line);
-		if(str1.length != 0)
+		int last = str1.length;
+		if(last != 0)
 		{
 			char[] str2 = new char[str1.length];
 			for(int i=0; i<last ; i++)
@@ -160,18 +161,18 @@ public class String123
 	public String mergeString(int num, String[] strArr) throws UserException
 	{
 		check(strArr);
-		if(num != strarr.length)
+		if(num != strArr.length)
 		{
 			throw new UserException("missmatch between number of strings and integer value");
 		}
-		check(strarr[0]);
+		check(strArr[0]);
 		String str = strArr[0];
 		for(int i=1; i<strArr.length; i++)
 		{
-			check(strarr[i]);
-			if(!strarr[i].isEmpty())
+			check(strArr[i]);
+			if(!strArr[i].isEmpty())
 			{
-				str = str + "-" + strarr[i];
+				str = str + "-" + strArr[i];
 			}
 		}
 		if(num == 0)

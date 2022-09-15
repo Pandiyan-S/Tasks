@@ -1,8 +1,6 @@
-package test;
+package beginnerstring;
 
-import beginnerstring.String123;
 import java.util.Scanner;
-import beginnerstring.UserException;
 public class Runner
 {
 	private static void menu()

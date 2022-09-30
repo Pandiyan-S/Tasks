@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Properties;
 import check.UserException;
@@ -58,5 +63,32 @@ public class FileMethods
 			e.printStackTrace();
 		}
 	}
-	//ex4
+	//ex11
+	public LocalDateTime getDateTime()
+	{
+		return LocalDateTime.now();
+	}
+	public long milliTime()
+	{
+		return System.currentTimeMillis();
+	}
+	public ZonedDateTime worldTime(ZoneId zone) throws UserException
+	{
+		return ZonedDateTime.now(zone);
+	}
+	public DayOfWeek weekDay(LocalDateTime day) throws UserException
+	{
+		check(day);
+		return day.getDayOfWeek();
+	}
+	public Month Month(LocalDateTime day) throws UserException
+	{
+		check(day);
+		return day.getMonth();
+	}
+	public int Years(LocalDateTime day) throws UserException
+	{
+		check(day);
+		return day.getYear();
+	}
 }

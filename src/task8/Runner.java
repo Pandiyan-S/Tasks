@@ -3,12 +3,31 @@ package task8;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Properties;
 import java.util.Scanner;
 import check.UserException;
 
 public class Runner
 {
+	enum Rainbow
+	{
+		VIOLET (1),
+		INDIGO (2),
+		BLUE (3),
+		GREEN (4),
+		YELLOW (5),
+		ORANGE (6),
+		RED (7);
+		private final int Sno;
+		Rainbow(int Sno)
+		{
+			this.Sno = Sno;
+		}
+	}
 	private static void menu()
 	{
 		System.out.println("Choose the operation to be performed");;
@@ -25,10 +44,16 @@ public class Runner
 				+ "print your object");
 		System.out.println("\t7. create an instance for the above POJO class using the default constructor. "
 				+ "call the appropriate setter and getter methods to input and print the variables. ");
-		System.out.println("\t8. check a key exists in a HashMap");
-		System.out.println("\t9. Create a class Bird with two methods: fly() & speak(). Let the fly( "
-				+ "the fly. Create an instance for the Duck from the runner class & invoke the fly & speak methods.");
-		System.out.println("\t11.Exit");
+		System.out.println("\t8. In the runner class,without importing POJO class\n"
+				+ "\t1. Invoke the default constructor of the POJO from the runner class\n"
+				+ "\t2. Invoke the overloaded constructor of the POJO from the runner class\n"
+				+ "\t3. Invoke any one getter method of the POJO from the runner class\n"
+				+ "\t4. Invoke any one setter method of the POJO from the runner class");
+		System.out.println("\t9. Define an Enum for the rainbow colors, with values(colorcode) ranging from 1 to 7. "
+				+ "Print the color and its corresponding color code from the main method.");
+		System.out.println("\t10. Write a Singleton class");
+		System.out.println("\t11. Test Time package methods");
+		System.out.println("\t13.Exit");
 	}
 	public int intInput(Scanner sc)
 	{
@@ -50,7 +75,7 @@ public class Runner
 		}while(ex);
 		return choice;
 	}
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		Scanner sc = new Scanner(System.in);
 		Runner run = new Runner();
@@ -60,7 +85,7 @@ public class Runner
 		File folder;
 		try
 		{
-			while (choice != 11 && def < 10)
+			while (choice != 13 && def < 10)
 			{
 				menu();
 				choice = run.intInput(sc);
@@ -134,8 +159,8 @@ public class Runner
 					System.out.println(base.getStr());
 					break;
 				case 6:
-					TruePOJO pojo = new TruePOJO("Hello World : ",2022);
-					System.out.println(pojo.toString());
+					Object pojo = new TruePOJO("Hello World : ",2022);
+					System.out.println(pojo);
 					break;
 				case 7:
 					TruePOJO normalPojo = new TruePOJO();
@@ -145,15 +170,56 @@ public class Runner
 					System.out.println(normalPojo.getNo());
 					break;
 				case 8:
-					
+					try
+					{
+						Class<?> c = Class.forName("pojopackage.ThisIsPojo");
+						Constructor<?> ctor = c.getDeclaredConstructor();
+						ctor.setAccessible(true);
+						Object defaultRef = ctor.newInstance();
+						Constructor<?> ctorArgs = c.getDeclaredConstructor(String.class,int.class);
+						ctorArgs.setAccessible(true);
+						Object overRef = ctorArgs.newInstance("My name is Pandi ", 50);
+						Method setter = c.getDeclaredMethod("setStr",String.class);
+						setter.invoke(defaultRef, "Pandiyan ");
+						Method getter = c.getDeclaredMethod("getStr");
+						System.out.println(getter.invoke(defaultRef));
+						System.out.println(getter.invoke(overRef));
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
 					break;
 				case 9:
-					
+					for(Rainbow color: Rainbow.values())
+					{
+						System.out.print(color);
+						System.out.print(" : ");
+						System.out.println(color.Sno);
+						System.out.print("The ordinal is ");
+						System.out.println(color.ordinal());
+					}
 					break;
 				case 10:
-					
+					Singleton once = Singleton.getInstance();
+					System.out.println(once.str);
 					break;
 				case 11:
+					sc.nextLine();
+					LocalDateTime today = file.getDateTime();
+					System.out.println("The current date and time : " + today);
+					System.out.println("The current time in milli seconds : " + file.milliTime());
+					ZoneId city1 = ZoneId.of("Europe/London");
+					System.out.println("London Time : " + file.worldTime(city1));
+					ZoneId city2 = ZoneId.of("America/New_York");
+					System.out.println("New York Time : " + file.worldTime(city2));
+					System.out.println("Today's day is " + file.weekDay(today));
+					LocalDateTime bday = LocalDateTime.of(2001, 6, 7, 6, 12);
+					System.out.println("The day of 07/06/2001 is " + file.weekDay(bday));
+					System.out.println("The month of 07/06/2001 is " + file.Month(bday));
+					System.out.println("The year of 07/06/2001 is " + file.Years(bday));
+					break;
+				case 13:
 					System.out.println("The program is closing");
 					break;
 				default:

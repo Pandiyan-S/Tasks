@@ -7,7 +7,7 @@ public class Runner
 {
 	private static void menu()
 	{
-		System.out.println("Choose the operation to be performed");;
+		System.out.println("Choose the operation to be performed");
 		System.out.println("\t1. Create a file sample.txt programmatically and write the lines.");
 		System.out.println("\t2. store the values in java.util.Properties object. Keys & Values can be provided "
 				+ "from the runner class.After loading the properties with the provided keys & values, "

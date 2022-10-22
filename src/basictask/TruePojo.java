@@ -1,30 +1,29 @@
-package pojopackage;
+package basictask;
 
-public class ThisIsPojo
+public class TruePojo
 {
 	String str;
 	int no;
-	ThisIsPojo(){System.out.println("hi");}
-	ThisIsPojo(String str,int num)
+	TruePojo(){}
+	TruePojo(String str,Integer n)
 	{
 		this.str = str;
-		no = num;
-		System.out.println("Hello");
+		no = n;
 	}
 	public void setStr(String line)
 	{
 		str = line;
 	}
 
-	public void setNo(int num)
+	public void setNo(int n)
 	{
-		no = num;
+		no = n;
 	}
 	public String getStr()
 	{
 		return str;
 	}
-	public int getNo()
+	public Integer getNo()
 	{
 		return no;
 	}

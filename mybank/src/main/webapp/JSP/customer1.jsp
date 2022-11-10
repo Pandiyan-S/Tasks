@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Customer Info</title>
+		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/CSS/style.css">
+		<style>
+		.customer{
+		 display:none;
+		}
+		</style>
+	</head>
+	<body>
+		<h1>Customers</h1>
+		<div class="centerDisplay" id="Customer profile">
+			<table class="profile">
+				<tr>
+					<td class="sideHead">ID : </td>
+					<td>${customerInfo.getId()}</td>
+				</tr>
+				<tr>
+					<td class="sideHead">Name : </td>
+					<td>${customerInfo.getName()}</td>
+				</tr>
+				<tr>
+					<td class="sideHead">DOB : </td>
+					<td>${customerInfo.getDob()}</td>
+				</tr>
+				<tr>
+					<td class="sideHead">PhoneNumber : </td>
+					<td>${customerInfo.getPhoneNumber()}</td>
+				</tr>
+				<tr>
+					<td class="sideHead">email : </td>
+					<td>${customerInfo.getEmail()}</td>
+				</tr>
+				<tr>
+					<td class="sideHead">Address : </td>
+					<td>${customerInfo.getAddress()}</td>
+				</tr>
+				<tr>
+					<th class="sideHead">PAN ID : </th>
+					<td>${customerInfo.getPanId()}</td>
+				</tr>
+				<tr>
+					<th class="sideHead">Aadar ID : </th>
+					<td>${customerInfo.getAadarId()}</td>
+				</tr>
+				<tr class="${caller}">
+					<th class="sideHead">Current Status :</th>
+					<td>${customerInfo.getStatus()}</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

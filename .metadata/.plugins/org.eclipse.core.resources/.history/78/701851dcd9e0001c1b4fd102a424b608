@@ -1,0 +1,141 @@
+package zcoinexchange;
+
+import java.util.Map;
+import java.util.regex.Pattern;
+
+public class ZCoinApplication 
+{
+	
+	ZCoinManagement cache=new ZCoinManagement(); 
+	
+	
+	private String adminMailID="admin@gmail.com";
+	private String adminPassword="admin";
+	
+	private int ZCoinValue;
+	
+	
+	
+	public boolean passwordCheck(String mailID,String password)
+	{
+		
+	}
+	
+	
+    
+	public void setZCoinValue(int zCoinValue) 
+	{
+		ZCoinValue = zCoinValue;
+	}
+
+	public boolean passwordCheck(String name,String mailId,String password,long mobileNo)
+       {
+    	  
+    	   
+    	 
+    	   
+    	   int position=mailId.lastIndexOf('@');
+    	   
+    	   
+    	   String userName=mailId.substring(0,position);
+    	   
+    	   if(password.length()<8 || password.equals(name)   || 
+    			   password.equals(mobileNo) || password.equals(userName) )
+    	   {
+    		   return false;
+    	   }
+    	   
+    	   if(!Pattern.matches( "(?=.*[A-Z]) ( ?=.*[a-z] ) ( ?=.*[0-9] ) (?=.*[!#%<>&\\*] ).{8,} "
+    			   , password))
+    	   {
+    		   return false;
+    	   }
+    	   
+    	    return true;
+    	   
+    	   
+    	   
+       }
+       
+       public RCTransaction getRcTransaction(int zID)
+       {
+    	   return cache.getRCTrans(zID);
+       }
+       
+       
+       public ZCoinTransaction getZCoinTrans(int zID)
+       {
+    	   return cache.getzCoinTrans(zID);
+       }
+       
+       
+       public Map<String,User> getPendingUser()
+       {
+    	   return cache.getPendingList();
+       }
+       
+       
+       public Map<String,User> getActiveUser()
+       {
+    	   return cache.getUserInfoMap();
+       }
+       
+       
+       public Map<Integer, Account> getAccDetailsMap() 
+       {
+			return cache.getAccDetailsMap();
+		}
+
+
+	
+
+		public Map<Integer, RCTransaction> getRcTransactionMap() 
+		{
+			return cache.getRcTransactionMap();
+		}
+
+
+		public Map<Integer, ZCoinTransaction> getzCoinTransactionMap() 
+		{
+			return cache.getzCoinTransactionMap();
+		}
+        
+		public void addUser(User user)
+		{
+			cache.addActiveUsers(user);
+		}
+        
+       
+       
+       
+       public String getAdminMailId()
+       {
+    	   return adminMailID;
+       }
+       
+       public String getAdminPassword()
+       {
+    	   return adminPassword;
+       }
+       
+       public void signUp(User user)
+       {
+    	   cache.addPendingUsers(user);
+       }
+       
+       public double zCoinToRC(int zCoin)
+       {
+    	  double commission= zCoin*(0.15/100);
+    	  return zCoin-commission;
+    	  
+       }
+       
+       public int zCointoRC(double amount)
+       {
+    	   return (int) (amount/ZCoinValue);
+       }
+       
+       
+       
+       
+}

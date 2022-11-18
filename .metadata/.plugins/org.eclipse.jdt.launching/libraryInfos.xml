@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+    <libraryInfo home="/home/inc2/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.1.v20211116-1657/jre" version="17.0.1"/>
+    <libraryInfo home="/home/inc2/Downloads/jdk1.8.0_301" version="1.8.0_301">
+        <bootpath>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/resources.jar"/>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/rt.jar"/>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/sunrsasign.jar"/>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/jsse.jar"/>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/jce.jar"/>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/charsets.jar"/>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/jfr.jar"/>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/classes"/>
+        </bootpath>
+        <extensionDirs>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/ext"/>
+            <entry path="/usr/java/packages/lib/ext"/>
+        </extensionDirs>
+        <endorsedDirs>
+            <entry path="/home/inc2/Downloads/jdk1.8.0_301/jre/lib/endorsed"/>
+        </endorsedDirs>
+    </libraryInfo>
+    <libraryInfo home="/home/inc2/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.1.v20211116-1657" version="17.0.1"/>
+</libraryInfos>

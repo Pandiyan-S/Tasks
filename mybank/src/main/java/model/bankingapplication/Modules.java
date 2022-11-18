@@ -348,16 +348,15 @@ public class Modules implements CustomerMethods, Administration
 		store.createAccount(acc);
 	}
 	@Override
-	public void edit(Customer custom,int userId) throws UserException
+	public void edit(Customer custom,int id) throws UserException
 	{
 		NullChecker.check(custom);
-		NullChecker.check(custom.getPanId());
-		NullChecker.check(custom.getAadarId());
-		NullChecker.check(custom.getDob());
-		NullChecker.check(custom.getName());
-		NullChecker.check(custom.getPhoneNumber());
-		NullChecker.check(custom.getUserType());
-		NullChecker.check(custom.getPassword());
+		NullChecker.check(custom.getPanId(),"PAN ID");
+		NullChecker.check(custom.getAadarId(),"Aadar");
+		NullChecker.check(custom.getDob(),"Date of Birth");
+		NullChecker.check(custom.getName(),"Name");
+		NullChecker.check(custom.getPhoneNumber(),"Phone Number");
+		NullChecker.check(custom.getUserType(),"User Type");
 		if(!validatePanId(custom.getPanId()))
 		{
 			throw new UserException("PAN number is not valid");
@@ -374,6 +373,6 @@ public class Modules implements CustomerMethods, Administration
 		{
 			throw new UserException("Email is not valid");
 		}
-		store.changeCustomeer(custom,userId);
+		store.changeCustomeer(custom,id);
 	}
 }

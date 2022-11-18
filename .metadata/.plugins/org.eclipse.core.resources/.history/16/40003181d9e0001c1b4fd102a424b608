@@ -1,0 +1,173 @@
+package zcoinexchange;
+
+import java.util.Map;
+import java.util.Scanner;
+
+public class ZCoinAccess 
+{
+
+	static Scanner input=new Scanner(  System.in );
+	static ZCoinApplication callAPI=new ZCoinApplication();
+	
+	
+	
+	static void adminProcess()
+	{
+		
+		System.out.println("Press 1-->View Pending List\nPress 2-->View User List\nPress 3-->View Account List\nPress 4-->View Transaction Details\nPress 5-->Set ZCoin Value ");
+		
+		int option=input.nextInt();
+		
+		if(option==1)
+		{
+			
+			Map<String,User>  pendingUser=callAPI.getPendingUser();
+			System.out.println( pendingUser  );
+			
+			System.out.println("Enter the emailId of the user to activate");
+            String mailId=input.nextLine();
+            
+            User user=pendingUser.get(mailId);
+            
+            callAPI.addUser(user);
+               
+            
+            
+            
+		}
+		
+		
+		else if( option==2 )
+		{
+			System.out.println( callAPI.getActiveUser() );
+		}
+		
+		else if( option==3 )
+		{
+			System.out.println(  callAPI.getAccDetailsMap() );
+		}
+		 	
+		
+		else if( option==4 )
+		{
+			
+			while(true)
+			{
+			System.out.println("Press 1-->RC Transaction\nPress 2-->Z-Coin Transaction");
+			
+			int choose=input.nextInt();
+			
+			if( choose==1 )
+			{
+				System.out.println( callAPI.getRcTransactionMap() );
+			}
+			else if( choose==2 )
+			{
+				System.out.println(  callAPI.getzCoinTransactionMap() );
+			}
+			else
+			{
+				System.out.println("Enter the correct Number");
+			}
+			
+			}
+				
+		}
+		
+		
+	}
+	
+	
+	
+	public static void main(String[] args) 
+	{
+		
+		while(true)
+		{
+		System.out.println("Press 0-->Sign-Up\nPress 1-->Sign-In\nPress 2-->Exit");
+		int option=input.nextInt();
+		input.nextLine();
+		switch(option)
+		{ 
+		  case 0:
+		        
+			  System.out.println("Enter your Name");
+			  String name=input.nextLine();
+			  
+			  System.out.println("Enter your mobleNumber");
+			  long mobileNo=input.nextLong();
+			  
+			  System.out.println("Enter your mail Id");
+			  String mailId=input.nextLine();
+			  
+			     if(!mailId.contains("@gmail.com"))
+			     {
+			    	 mailId+="@gmail.com";
+			     }
+			     String password="";
+			 
+			     
+			    while(true)
+			    {
+			    	
+			    	
+			     System.out.println("Enter the password");
+			      password=input.nextLine();
+			        
+			            if( !callAPI.passwordCheck(name, mailId, password, mobileNo) )
+			            {  
+			            	
+			            	System.out.println("Enter the Strong Password");
+			            }
+			            
+			            else
+			            {
+			            	break;
+			            }
+			     
+			    }
+		
+			   System.out.println("Enter the HId given by government");
+			   int hID=input.nextInt();
+			   
+			   System.out.println("Give the Initial Deposit Amount");
+			   
+			   double amount=input.nextLong();
+			   
+			   User user =new User(  name,mailId,password,mobileNo,hID,amount  );
+			   
+			   callAPI.signUp(user);
+			   
+			  break;
+			   
+			   
+		   case 2:
+			   
+			   
+			   System.out.println("Enter your mailID");
+			   String mailID=input.nextLine();
+			   
+			   System.out.println("Enter your password");
+			   String pass=input.nextLine();
+			   
+			   if(   mailID.equals(callAPI.getAdminMailId())  &&  pass.equals(callAPI.getAdminPassword())  )
+			   {
+				   adminProcess();
+			   }
+			   
+			   
+			   
+			   break;
+	   
+		default:
+			System.out.println("Enter correct Number");
+			
+		}
+		
+		
+		
+		}
+		
+	}
+
+}

@@ -1,0 +1,691 @@
+package bankingapplication;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import check.UserException;
+
+public class DatabaseStorage implements StoreageLayer
+{
+	private static Connection connector()
+	{
+		String url = "jdbc:mysql://localhost:3306/BankingDB";
+		String userName = "Task10";
+		String password = "Thirsty@Elephant0241";
+		Connection connect = null;
+		try
+		{
+			connect = DriverManager.getConnection(url, userName, password);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return connect;
+	}
+	private void shutDown(Connection link,Statement state)
+	{
+		try
+		{
+			state.close();
+			link.close();
+		}
+		catch (SQLException e)
+		{
+			//e.printStackTrace();
+		}
+	}
+	@Override
+	public boolean verifyPassword(int id,String password) throws UserException
+	{
+		boolean truth = false;
+		NullChecker.check(password);
+		Connection wire = connector();
+		PreparedStatement query = null;
+		try
+		{
+			query = wire.prepareStatement("Select Password from UserInfo where ID = ?;");
+			query.setInt(1, id);
+			try(ResultSet rset = query.executeQuery())
+			{
+				rset.next();
+				String str = rset.getString("Password");
+				if(str.equals(password))
+				{
+					truth = true;
+				}
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("Either the password or the ID is wrong ",e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+			return truth;
+		}
+	}
+	@Override
+	public void login(int id) throws UserException
+	{
+		Connection wire = connector();
+		PreparedStatement query = null;
+		try
+		{
+			query = wire.prepareStatement("Update CustomerInfo set Status = 'loggedin' where Id = ?;");
+			query.setInt(1, id);
+			query.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("There is a problem with logging in ",e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+		}
+	}
+	@Override
+	public boolean isAdmin(int id) throws UserException
+	{
+		boolean truth = false;
+		Connection wire = connector();
+		PreparedStatement query = null;
+		try
+		{
+			query = wire.prepareStatement("Select User_Type from UserInfo where ID = ?;");
+			query.setInt(1, id);
+			try(ResultSet rset = query.executeQuery())
+			{
+				rset.next();
+				if(rset.getString("User_Type").equalsIgnoreCase("admin"))
+				{
+					truth = true;
+				}
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("There is a problem with logging in ",e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+			return truth;
+		}
+	}
+	@Override
+	public Map<String,AccountDetails> getAccounts(int id) throws UserException
+	{
+		Map<String,AccountDetails> hm = new HashMap<String,AccountDetails>();
+		Connection wire = connector();
+		PreparedStatement query = null;
+		try
+		{
+			query = wire.prepareStatement("Select * from AccountInfo where ID = ?;");
+			query.setInt(1, id);
+			try(ResultSet rset = query.executeQuery())
+			{
+				while(rset.next())
+				{
+					AccountDetails accounts = new AccountDetails();
+					accounts.setId(rset.getInt("ID"));
+					accounts.setAccountNumber(rset.getString("Account_Number"));
+					accounts.setBranch(rset.getString("Branch"));
+					accounts.setAccountType(rset.getString("Account_Type"));
+					accounts.setBalance(rset.getFloat("Balance"));
+					accounts.setMinBalance(rset.getInt("Minimum_balance"));
+					accounts.setState(rset.getString("Account_status"));
+					hm.put(accounts.getAccountNumber(), accounts);
+				}
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("There is a problem with logging in ",e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+			return hm;
+		}
+	}
+	@Override
+	public Map<Integer,Customer> getCustomers() throws UserException
+	{
+		Map<Integer,Customer> hm = new HashMap<Integer,Customer>();
+		Connection wire = connector();
+		PreparedStatement query = null;
+		try
+		{
+			query = wire.prepareStatement("SELECT UserInfo.ID, UserInfo.User_Type, UserInfo.Name, "
+					+ "UserInfo.DOB, UserInfo.Phone_number, UserInfo.email, UserInfo.Address, UserInfo.Password, "
+					+ "CustomerInfo.Status, CustomerInfo.PAN_ID, CustomerInfo.Aadar_Id FROM UserInfo "
+					+ "INNER JOIN CustomerInfo ON UserInfo.ID = CustomerInfo.ID;");
+			try(ResultSet rset = query.executeQuery())
+			{
+				while(rset.next())
+				{
+					
+					Customer customer = new Customer();
+					customer.setId(rset.getInt("ID"));
+					customer.setUserType(rset.getString("User_Type"));
+					customer.setName(rset.getString("Name"));
+					customer.setDob(rset.getString("dob"));
+					customer.setPhoneNumber(rset.getLong("Phone_number"));
+					customer.setEmail(rset.getString("email"));
+					customer.setAddress(rset.getString("Address"));
+					customer.setStatus(rset.getString("Status"));
+					customer.setPanId(rset.getString("PAN_ID"));
+					customer.setAadarId(rset.getLong("Aadar_Id"));
+					hm.put(customer.getId(), customer);
+				}
+			}
+			if(hm.isEmpty())
+			{
+				throw new UserException("No user exists ");
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("There is a problem with logging in ",e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+			return hm;
+		}
+	}
+	@Override
+	public Customer getMyCustomerInfo(int id) throws UserException
+	{
+		Connection wire = connector();
+		PreparedStatement query = null;
+		Customer customer = null;
+		try
+		{
+			query = wire.prepareStatement("SELECT UserInfo.ID, UserInfo.User_Type, UserInfo.Name, "
+					+ "UserInfo.DOB, UserInfo.Phone_number, UserInfo.email, UserInfo.Address, UserInfo.Password, "
+					+ "CustomerInfo.Status, CustomerInfo.PAN_ID, CustomerInfo.Aadar_Id FROM UserInfo "
+					+ "INNER JOIN CustomerInfo ON UserInfo.ID = CustomerInfo.ID where CustomerInfo.ID = ?;");
+			query.setInt(1, id);
+			try(ResultSet rset = query.executeQuery())
+			{
+				rset.next();
+				customer = new Customer();
+				customer.setId(rset.getInt("ID"));
+				customer.setUserType(rset.getString("User_Type"));
+				customer.setName(rset.getString("Name"));
+				customer.setDob(rset.getString("dob"));
+				customer.setPhoneNumber(rset.getLong("Phone_number"));
+				customer.setEmail(rset.getString("email"));
+				customer.setAddress(rset.getString("Address"));
+				customer.setStatus(rset.getString("Status"));
+				customer.setPanId(rset.getString("PAN_ID"));
+				customer.setAadarId(rset.getLong("Aadar_Id"));
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("There is a problem with logging in ",e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+			return customer;
+		}
+	}
+	@Override
+	public Admin getMyAdminInfo(int id) throws UserException
+	{
+		Connection wire = connector();
+		Admin admin = null;
+		PreparedStatement query = null;
+		try
+		{
+			query = wire.prepareStatement("Select * from UserInfo where ID = ?;");
+			query.setInt(1, id);
+			try(ResultSet rset = query.executeQuery())
+			{
+				rset.next();
+				admin = new Admin();
+				admin.setId(rset.getInt("ID"));
+				admin.setUserType(rset.getString("User_Type"));
+				admin.setName(rset.getString("Name"));
+				admin.setDob(rset.getString("dob"));
+				admin.setPhoneNumber(rset.getLong("Phone_number"));
+				admin.setEmail(rset.getString("email"));
+				admin.setAddress(rset.getString("Address"));
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("There is a problem with logging in ",e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+			return admin;
+		}
+	}
+	@Override
+	public void transaction(Transaction change) throws UserException
+	{
+		NullChecker.check(change);
+		Connection wire = connector();
+		String approval = change.getApproval();
+		String accNo = change.getAccountNumber();
+		String type = change.getModeOfTransaction();
+		float amount = change.getAmount();
+		String operation = change.getCreditOrDebit();
+		String toAccount = change.getToAccount();
+		if(!approval.equalsIgnoreCase("approved"))
+		{
+			PreparedStatement query = wire.prepareStatement("Insert into Transaction"
+					+ "(Account_number,Transaction_amount,Mode_Of_Transaction,Time,Transaction_account,Transaction_type,approval,ID) "
+					+ "values (?,?,?,?,?,?,?,?)");
+			query.setString(1, accNo);
+			query.setFloat(2, amount);
+			query.setString(3, type);
+			query.setLong(4, change.getTime());
+			query.setString(5, toAccount);
+			query.setString(6, operation);
+			if(type.equalsIgnoreCase("withdraw"))
+			{
+				if(amount>1000)
+				{
+					change.setApproval("pending");
+				}
+			}
+			query.setString(7, change.getApproval());
+			query.setInt(8, change.getId());
+			query.executeUpdate();
+			if(approval.equalsIgnoreCase("pending"))
+			{
+				return;
+			}
+		}
+		float balance = getAccountBalance(accNo);
+		if(operation.equalsIgnoreCase("credit"))
+		{
+			balance += amount;
+		}
+		else
+		{
+			balance -= amount;
+		}
+		int tID;
+		if(balance<0)
+		{
+			PreparedStatement query = wire.prepareStatement("Select max(Transaction_id) from Transaction");
+			try(ResultSet rset = query.executeQuery())
+			{
+				rset.next();
+				tID = rset.getInt(1);
+			}
+			query = wire.prepareStatement("delete from Transaction where Transaction_id = ?;");
+			query.setInt(1, tID);
+		}
+		PreparedStatement query = wire.prepareStatement("Update AccountInfo set Balance = ? where Account_number = ?");
+		query.setFloat(1, balance);
+		query.setString(2, accNo);
+		query.executeUpdate();
+		if(type.equalsIgnoreCase("Transfer"))
+		{
+			try
+			{
+				float toAccountBalance = getAccountBalance(toAccount);
+				toAccountBalance += amount;
+				query = wire.prepareStatement("Update AccountInfo set Balance = ? where Account_number = ?");
+				query.setFloat(1, toAccountBalance);
+				query.setString(2, toAccount);
+				query.executeUpdate();
+				query = wire.prepareStatement("Insert into Transaction"
+						+ "(Account_number,Transaction_amount,Mode_Of_Transaction,Time,Transaction_account,Transaction_type,approval,ID) "
+						+ "values (?,?,?,?,?,?,?,?)");
+				query.setString(1, toAccount);
+				query.setFloat(2, amount);
+				query.setString(3, type);
+				query.setLong(4, change.getTime());
+				query.setString(5, accNo);
+				query.setString(6, operation);
+				query.setString(7, change.getApproval());
+				query.setInt(8, findId(toAccount));
+			}
+			catch (SQLException e) {}
+		}
+		shutDown(wire,query);
+	}
+	@Override
+	public Map<String,Transaction> transactionToApprove() throws UserException
+	{
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Select * from Transaction where approval = 'pending'");
+		Map<String,Transaction> hm = new HashMap<String,Transaction>();
+		Transaction change =null;
+		try(ResultSet rset = query.executeQuery())
+		{
+			while (rset.next())
+			{
+				change = new Transaction();
+				change.setAccountNumber(rset.getString("Account_number"));
+				change.setAmount(rset.getFloat("Transaction_amount"));
+				change.setModeOfTransaction(rset.getString("Mode_Of_Transaction"));
+				change.setToAccount(rset.getString("time"));
+				change.setTime(rset.getLong("Transaction_account"));
+				change.setCreditOrDebit(rset.getString("Transaction_type"));
+				change.setApproval(rset.getString("approval"));
+				change.setTransaction_id(rset.getLong("Transaction_id"));
+				change.setId(rset.getInt("ID"));
+				hm.put(change.getAccountNumber(), change);
+			}
+		}
+		shutDown(wire,query);
+		return hm;
+	}
+	@Override
+	public void approveTransaction(Transaction change) throws UserException
+	{
+		NullChecker.check(change);
+		Connection wire = connector();
+		String approval = change.getApproval();
+		if(!approval.equalsIgnoreCase("pending"))
+		{
+			throw new UserException("No updates pending ");
+		}
+		PreparedStatement query = wire.prepareStatement("Update Transaction set approval = 'approved' where Account_number = ?");
+		query.setString(1, change.getAccountNumber());
+		change.setApproval("approved");
+		query.executeUpdate();
+		transaction(change);
+	}
+	@Override
+	public String currentStatus(long transactionNumber) throws UserException
+	{
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("select approval from Transaction where Transaction_id = ?;");
+		query.setLong(1, transactionNumber);
+		String change =null;
+		try(ResultSet rset = query.executeQuery())
+		{
+			rset.next();
+			change = rset.getString(1);
+		}
+		shutDown(wire,query);
+		return change;
+	}
+	@Override
+	public float getAccountBalance(String accNo) throws UserException
+	{
+		NullChecker.check(accNo);
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Select Balance from AccountInfo where Account_number = ?");
+		query.setString(1, accNo);
+		float balance;
+		try(ResultSet rset = query.executeQuery())
+		{
+			rset.next();
+			balance = rset.getLong(1);
+		}
+		shutDown(wire,query);
+		return balance;
+	}
+	@Override
+	public Map<Long,Transaction> transactionList(String accNo) throws UserException
+	{
+		NullChecker.check(accNo);
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Select * from Transaction where Account_number = ?");
+		query.setString(1, accNo);
+		Map<Long,Transaction> statement = new HashMap<Long,Transaction>();
+		Transaction change = null;
+		try(ResultSet rset = query.executeQuery())
+		{
+			while (rset.next())
+			{
+				change = new Transaction();
+				long transId = rset.getLong("Transaction_id");
+				change.setAccountNumber(rset.getString("Account_number"));
+				change.setAmount(rset.getFloat("Transaction_amount"));
+				change.setModeOfTransaction(rset.getString("Mode_Of_Transaction"));
+				change.setToAccount(rset.getString("Transaction_account"));
+				change.setTime(rset.getLong("Time"));
+				change.setCreditOrDebit(rset.getString("Transaction_type"));
+				change.setApproval(rset.getString("approval"));
+				change.setTransaction_id(transId);
+				change.setId(rset.getInt("ID"));
+				statement.put(transId,change);
+			}
+		}
+		if(statement.isEmpty())
+		{
+			throw new UserException("No such account exists ");
+		}
+		shutDown(wire,query);
+		return statement;
+	}
+	@Override
+	public void changePassword(int id,String oldPassword,String newPassword) throws UserException
+	{
+		NullChecker.check(oldPassword);
+		NullChecker.check(newPassword);
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Select Password from UserInfo where id = ?;");
+		query.setInt(1, id);
+		try(ResultSet rset = query.executeQuery())
+		{
+			rset.next();
+			if(!rset.getString(1).equals(oldPassword))
+			{
+				throw new UserException("Incorrect password ");
+			}
+			PreparedStatement secondQuery = wire.prepareStatement("Update UserInfo set Password = ? where id = ?;");
+			secondQuery.setString(1, newPassword);
+			secondQuery.setInt(2, id);
+			secondQuery.executeUpdate();
+			shutDown(wire,secondQuery);
+		}
+		shutDown(wire,query);
+	}
+	@Override
+	public Map<Integer,Map<String,AccountDetails>> allAccounts() throws UserException
+	{
+		Connection wire = connector();
+		Map<Integer,Map<String,AccountDetails>> accountList = new HashMap<Integer,Map<String,AccountDetails>>();
+		PreparedStatement query = wire.prepareStatement("Select unique(id) from AccountInfo");
+		List<Integer> ids = new ArrayList<Integer>();
+		try(ResultSet rset = query.executeQuery())
+		{
+			while(rset.next())
+			{
+				ids.add(rset.getInt(1));
+			}
+		}
+		for(int i:ids)
+		{
+			query = wire.prepareStatement("Select * from AccountInfo where id = ?;");
+			query.setInt(1,i);
+			Map<String,AccountDetails> hm = new HashMap<String,AccountDetails>();
+			try(ResultSet rset = query.executeQuery())
+			{
+				while(rset.next())
+				{
+					AccountDetails accounts = new AccountDetails();
+					accounts.setId(rset.getInt("ID"));
+					accounts.setAccountNumber(rset.getString("Account_Number"));
+					accounts.setBranch(rset.getString("Branch"));
+					accounts.setAccountType(rset.getString("Account_Type"));
+					accounts.setBalance(rset.getFloat("Balance"));
+					accounts.setMinBalance(rset.getInt("Minimum_balance"));
+					accounts.setState(rset.getString("Account_status"));
+					hm.put(accounts.getAccountNumber(), accounts);
+				}
+			}
+			accountList.put(i, hm);
+		}
+		shutDown(wire,query);
+		return accountList;
+	}
+	@Override
+	public Map<String,Map<Long,Transaction>> allTransactions(int id) throws UserException
+	{
+		Connection wire = connector();
+		Map<String,Map<Long,Transaction>> accountList = new HashMap<String,Map<Long,Transaction>>();
+		PreparedStatement query = wire.prepareStatement("Select Account_number from UserInfo where id = ?;");
+		query.setInt(1, id);
+		List<String> ids = new ArrayList<String>();
+		try(ResultSet rset = query.executeQuery())
+		{
+			while(rset.next())
+			{
+				ids.add(rset.getString(1));
+			}
+		}
+		if(ids.isEmpty())
+		{
+			throw new UserException("No such user exists ");
+		}
+		for(String str:ids)
+		{
+			query = wire.prepareStatement("Select * from Transaction where Account_number = ?");
+			query.setString(1,str);
+			Map<Long,Transaction> hm = new HashMap<Long,Transaction>();
+			try(ResultSet rset = query.executeQuery())
+			{
+				while(rset.next())
+				{
+					Transaction change = new Transaction();
+					change.setAccountNumber(rset.getString("Account_number"));
+					change.setAmount(rset.getFloat("Transaction_amount"));
+					change.setModeOfTransaction(rset.getString("Mode_Of_Transaction"));
+					change.setToAccount(rset.getString("time"));
+					change.setTime(rset.getLong("Transaction_account"));
+					change.setCreditOrDebit(rset.getString("Transaction_type"));
+					change.setApproval(rset.getString("approval"));
+					change.setTransaction_id(rset.getLong("Transaction_id"));
+					change.setId(rset.getInt("ID"));
+					hm.put(change.getTransaction_id(), change);
+				}
+			}
+			accountList.put(str, hm);
+		}
+		shutDown(wire,query);
+		return accountList;
+	}
+	@Override
+	public boolean checkIfIn(String accNo) throws UserException
+	{
+		NullChecker.check(accNo);
+		boolean truth = false;
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Select count(*) from AccountInfo where Account_number = ?");
+		query.setString(1,accNo);
+		try(ResultSet rset = query.executeQuery())
+		{
+			rset.next();
+			if(rset.getInt(1) != 0)
+			{
+				truth = true;
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("No such account exists ");
+		}
+		shutDown(wire,query);
+		return truth;
+	}
+	@Override
+	public boolean checkIfIn(String accNo,int id) throws UserException
+	{
+		NullChecker.check(accNo);
+		boolean truth = false;
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Select id from AccountInfo where Account_number = ?");
+		query.setString(1,accNo);
+		try(ResultSet rset = query.executeQuery())
+		{
+			rset.next();
+			if(rset.getInt("id") == id)
+			{
+				truth = true;
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("No such account exists ");
+		}
+		shutDown(wire,query);
+		return truth;
+	}
+	@Override
+	public void logout(int id) throws UserException
+	{
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Update UserInfo set Status = 'loggedout' where Id = ?;");
+		query.setInt(1, id);
+		query.executeUpdate();
+		shutDown(wire,query);
+	}
+	@Override
+	public boolean getIfActive(String accNo) throws UserException
+	{
+		NullChecker.check(accNo);
+		boolean truth = false;
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("select Account_status from AccountInfo where Account_number = ?");
+		query.setString(1, accNo);
+		try(ResultSet rset = query.executeQuery())
+		{
+			rset.next();
+			if(rset.getString("Account_status").equalsIgnoreCase("active"))
+			{
+				truth = true;
+			}
+		}
+		return truth;
+	}
+	@Override
+	public boolean checkIfIn(long transaction_id,int id) throws UserException
+	{
+		NullChecker.check(transaction_id);
+		boolean truth = false;
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Select id from Transaction where Transaction_id = ?;");
+		query.setLong(1,transaction_id);
+		try(ResultSet rset = query.executeQuery())
+		{
+			rset.next();
+			if(rset.getInt("id") == id)
+			{
+				truth = true;
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new UserException("No such account exists ");
+		}
+		shutDown(wire,query);
+		return truth;
+	}
+	private int findId(String accNo) throws UserException
+	{
+		NullChecker.check(accNo);
+		Connection wire = connector();
+		PreparedStatement query = wire.prepareStatement("Select id from AccountInfo where Account_number = ?;");
+		query.setString(1,accNo);
+		try(ResultSet rset = query.executeQuery())
+		{
+			rset.next();
+			return rset.getInt("id");
+		}
+	}
+}

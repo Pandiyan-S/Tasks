@@ -1,0 +1,17 @@
+package bankingapplication;
+
+import java.sql.SQLException;
+import check.UserException;
+
+public interface UserInter
+{
+
+	public boolean signIn(int id, String password) throws UserException, SQLException;
+
+	public void changePassword(int id,String oldPassword, String newPassword) throws SQLException, UserException;
+
+	public void signOut(int id) throws UserException, SQLException;
+	
+	public String UserType(int id) throws SQLException;
+
+}

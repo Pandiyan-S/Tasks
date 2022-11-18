@@ -1,0 +1,201 @@
+package bankingapplication;
+
+import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.logging.Logger;
+import check.UserException;
+
+public class Runner
+{
+	private static Logger logger = Logger.getLogger("Banking logger");
+	
+	private void customerProfileDisplay(Customer profile)
+	{
+		logger.info("Customer ID : " + profile.getId());
+		logger.info("Name : " + profile.getName());
+		logger.info("Date of Birth : " + profile.getDob());
+		logger.info("Mobile number : " + profile.getPhoneNumber());
+		String email = profile.getEmail();
+		if(email != null)
+		{
+			logger.info("Email : " + email);
+		}
+		String address = profile.getAddress();
+		if(address != null)
+		{
+			logger.info("Address : " + address);
+		}
+		logger.info("PAN ID : " + profile.getPanId());
+		logger.info("Aadar ID : " + profile.getAadarId());
+	}
+	private void showCustomerAccountDetails(Map<String, AccountDetails> customerAccounts)
+	{
+		int i=0;
+		for(Map.Entry<String, AccountDetails> account:customerAccounts.entrySet())
+		{
+			logger.info("Account "+ ++i);
+			logger.info("Account Number : " + account.getKey());
+			logger.info("Branch : " + account.getValue().getBranch());
+			logger.info("Account Type : " + account.getValue().getAccountType());
+			logger.info("Balance : " + account.getValue().getBalance());
+			logger.info("Minimum Balance : " + account.getValue().getMinBalance());
+			logger.info("Branch : " + account.getValue().getBranch());
+		}
+	}
+	private void displayStatement(Map<Long,Transaction> statement)
+	{
+		int i=0;
+		for(Entry<Long, Transaction> useage:statement.entrySet())
+		{
+			logger.info("Transaction "+ ++i);
+			logger.info("Transaction Id : " + useage.getKey());
+			logger.info("Account number : " + useage.getValue().getAccountNumber());
+			logger.info("Amount : " + useage.getValue().getAmount());
+			logger.info("Type : " + useage.getValue().getModeOfTransaction());
+			Instant point = Instant.ofEpochMilli(useage.getValue().getTime());
+			LocalDateTime time = LocalDateTime.ofInstant(point, ZoneId.systemDefault());
+			logger.info("Time of transaction : " + time);
+			String toAcc = useage.getValue().getToAccount();
+			if(toAcc != null)
+			{
+				logger.info("Transfer Account : " + toAcc);
+			}
+			logger.info("Credit or Debit : " + useage.getValue().getCreditOrDebit());
+			logger.info("Approval : " + useage.getValue().getApproval());
+		}
+	}
+	public static void main(String[] args)
+	{
+		int userID = 0;
+		Runner run = new Runner();
+		NumberScanner scan = new NumberScanner();
+		Scanner sc = new Scanner(System.in);
+		Modules logic = new Modules();
+		boolean truth = true;
+		try
+		{
+			while (truth)
+			{
+				logger.info("Enter the user id ");
+				userID = sc.nextInt();
+				sc.nextLine();
+				logger.info("Enter the Password ");
+				String password = sc.nextLine();
+				if (logic.signIn(userID, password))
+				{
+					logger.info("Welcome to banking application dear "+logic.userType(userID));
+					truth = false;
+				}
+				else
+				{
+					logger.info("Invalid user or password ");
+				}
+			}
+			int choice = 0;
+			if(logic.userType(userID).equalsIgnoreCase("customer"))
+			{
+				while (choice!=9) {
+					CustomerMethods perform = new Modules();
+					logger.info("choose the operation to be performed ");
+					logger.info("1. view profile ");
+					logger.info("2. view accounts ");
+					logger.info("3. change password ");
+					logger.info("4. deposit ");
+					logger.info("5. withdraw ");
+					logger.info("6. transfer ");
+					logger.info("7. find balance ");
+					logger.info("8. Statement");
+					logger.info(". Exit ");
+					choice = scan.intInput(sc);
+					switch (choice) {
+					case 1:
+						Customer profile = perform.showCustomerProfile(userID);
+						run.customerProfileDisplay(profile);
+						break;
+					case 2:
+						Map<String, AccountDetails> customerAccounts = perform.customerAccounts(userID);
+						run.showCustomerAccountDetails(customerAccounts);
+						break;
+					case 3:
+						sc.nextLine();
+						logger.info("Enter the old Password ");
+						String oldPassword = sc.nextLine();
+						logger.info("Enter the new Password ");
+						String newPassword = sc.nextLine();
+						perform.changePassword(userID,oldPassword, newPassword);
+						break;
+					case 4:
+						sc.nextLine();
+						logger.info("Enter the Account number ");
+						String depositAccNo = sc.nextLine();
+						if (perform.checkCustomerAccountActive(userID,depositAccNo))
+						{
+							logger.info("Enter the Amount ");
+							float depositAmount = sc.nextFloat();
+							perform.deposit(userID,depositAccNo, depositAmount);
+						}
+						break;
+					case 5:
+						sc.nextLine();
+						logger.info("Enter the Account number ");
+						String withdrawAccNo = sc.nextLine();
+						if (perform.checkCustomerAccountActive(userID,withdrawAccNo))
+						{
+							logger.info("Enter the Amount ");
+							float withdrawAmount = scan.floatInput(sc);
+							perform.withdraw(userID,withdrawAccNo, withdrawAmount);
+						}
+						break;
+					case 6:
+						sc.nextLine();
+						logger.info("Enter your Account number ");
+						String fromAccNo = sc.nextLine();
+						if (perform.checkCustomerAccountActive(userID,fromAccNo))
+						{
+							logger.info("Enter reciver Account number ");
+							String toAccNo = sc.nextLine();
+							logger.info("Enter the Amount ");
+							float transferAmount = scan.floatInput(sc);
+							perform.transfer(userID,fromAccNo, toAccNo, transferAmount);
+						}
+						break;
+					case 7:
+						sc.nextLine();
+						logger.info("Enter your Account number ");
+						String balanceAccNo = sc.nextLine();
+						logger.info(perform.viewBalance(userID,balanceAccNo).toString());
+						break;
+					case 8:
+						sc.nextLine();
+						logger.info("Enter your Account number ");
+						String statementAccNo = sc.nextLine();
+						Map<Long,Transaction> statement = perform.statement(userID,statementAccNo);
+						run.displayStatement(statement);
+						break;
+					case 9:
+						logic.signOut(userID);
+						logger.info("Signing out");
+						break;
+					default:
+						logger.info("No such operation exists ");
+					}
+				}
+			}
+			
+		}
+		catch (UserException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			sc.close();
+		}
+		
+	}
+}

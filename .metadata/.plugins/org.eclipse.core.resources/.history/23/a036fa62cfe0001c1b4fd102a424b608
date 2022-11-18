@@ -1,0 +1,26 @@
+package zcoinexchange;
+
+public class ZCoinTransaction 
+{
+     private int zID;
+     private String type;
+	public int getzID() {
+		return zID;
+	}
+	public void setzID(int zID) {
+		this.zID = zID;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	@Override
+	public String toString() {
+		return "ZCoinTransaction [zID=" + zID + ", type=" + type + "]";
+	}
+     
+     
+     
+}

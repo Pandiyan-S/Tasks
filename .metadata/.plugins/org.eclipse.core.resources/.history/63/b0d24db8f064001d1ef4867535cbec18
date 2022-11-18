@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body style="background-color:#BCE1F3;">
+	<script>
+		function enterPair()
+		{
+			var pair = document.getElementById('Pairs').value;
+			const div = document.createElement("div");
+			div.setAttribute("class","inputTable");
+			div.setAttribute("id","Table");
+			const table = document.createElement("table");
+			const tbody = document.createElement("tbody");
+			for(let i=0; i<pair; i++)
+			{
+				const trow = document.createElement("tr");
+				for(let j=0; j<2; j++)
+				{
+					const cell = document.createElement("td");
+					const input = document.createElement("input");
+					input.setAttribute("type","text");
+					input.setAttribute("name","pairsInput");
+					input.setAttribute("id",("cell"+i+j));
+					if(j%2==1)
+					{
+
+						input.setAttribute("class","Child");
+						input.setAttribute("placeholder","Child");
+					}
+					else
+					{
+						input.setAttribute("class","Parent");
+						input.setAttribute("placeholder","Parent");
+					}
+					cell.appendChild(input);
+					trow.appendChild(cell);
+				}
+				tbody.appendChild(trow);
+			}
+			table.appendChild(tbody);
+			div.appendChild(table);
+			const button = document.createElement("button");
+			button.setAttribute("class","btn");
+			document.body.appendChild(div);
+		}
+		function findGrandChild(grandFather)
+		{
+			var relation =
+			[
+				{parent:"Ram",child:"Ravi"},
+				{parent:"Ravi",child:"Siva"},
+				{parent:"Siva",child:"Sam"},
+				{parent:"Ravi",child:"Raghu"},
+				{parent:"Raghu",child:"Tom"},
+				{parent:"Tom",child:"Jerry"},
+				{parent:"Ram",child:"Sita"},
+				{parent:"Sita",child:"Sethu"}
+			];
+			var grandChild = [];
+			let i = 0;
+			for(let obj in relation)
+			{
+				if(relation[obj].parent == grandFather)
+				{
+					let name = relation[obj].child;
+					for(let childObj in relation)
+					{
+						if(relation[childObj].parent==name)
+						{
+							grandChild[i++] = relation[childObj].child;
+						}
+					}
+				}
+			}
+			let disp;
+			if(grandChild[0] == undefined)
+			{
+				disp = '<p style="color:red">No GrandChildren</p>';
+			}
+			else
+			{
+				disp = "<p>The grand children are : <br><br>";
+				for(let i in grandChild)
+				{
+					disp += grandChild[i]+"<br>";
+				}
+				disp += "</p>";
+			}
+			document.getElementById("demo").innerHTML = disp;
+		}
+//		document.getElementById("demo").innerHTML = grandChild;
+//		document.write(" = "+grandChild.length);
+	</script>
+		<div>
+			<label for="pairs">Enter the number of pairs :</label>
+			<input name="Pairs" type="number" id="Pairs" min=0 required>
+			<button onclick="enterPair()" class="btn" name="action">GO</button>
+		</div>
+		<!-- <div style="margin-left:43%;margin-top:18%;">
+			<label for="Name">Name :</label>
+			<input name="Name" type="text" id="Name" placeholder="Name" value="Ram" required>
+			<button onclick="findGrandChild(document.getElementById('Name').value)" name="action">find</button>
+		</div>
+		<div id="demo" style="margin-left:43%;padding-top:2%">
+		<p></p>
+		</div> -->
+</body>
+</html>

@@ -1,0 +1,30 @@
+package bankingapplication;
+
+import java.sql.SQLException;
+import java.util.Map;
+import check.UserException;
+
+public interface Administration extends UserInter
+{
+
+	public Map<Integer, Customer> showAllCustomers() throws SQLException, UserException;
+
+	public Map<String, AccountDetails> getCustomerAccounts(int id) throws SQLException;
+
+	public Admin showAdminProfile(int id) throws SQLException, UserException;
+
+	public Map<String, Transaction> pendingList() throws SQLException, UserException;
+
+	public void giveapproval(Transaction waiting) throws UserException, SQLException;
+
+	public String customerTransactionStatus(int id,long Transaction_id) throws UserException, SQLException;
+	
+	public Map<Integer,Map<String,AccountDetails>> getAllAccounts() throws SQLException, UserException;
+	
+	public Map<String,Map<Long,Transaction>> getAllTransactions(int id) throws SQLException, UserException;
+	
+	public Float viewCustomerBalance(String accNo) throws SQLException, UserException;
+
+	boolean checkAccountActive(String accNo) throws SQLException, UserException;
+
+}

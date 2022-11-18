@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body style="background-color:#BCE1F3;">
+	<script>
+		var pair;
+		var relation = [];
+		function enterPair()
+		{
+			pair = document.getElementById('Pairs').value;
+			const div = document.createElement("div");
+			div.setAttribute("class","inputTable");
+			div.setAttribute("id","Table");
+			const table = document.createElement("table");
+			const tbody = document.createElement("tbody");
+			for(let i=0; i<pair; i++)
+			{
+				const trow = document.createElement("tr");
+				for(let j=0; j<2; j++)
+				{
+					const cell = document.createElement("td");
+					const input = document.createElement("input");
+					input.setAttribute("type","text");
+					input.setAttribute("name","pairsInput");
+					input.setAttribute("id",("cell"+i+j));
+					if(j%2==1)
+					{
+						input.setAttribute("id",("Child"+(i+1)));
+						input.setAttribute("class","Child");
+						input.setAttribute("placeholder","Child");
+					}
+					else
+					{
+						input.setAttribute("id",("Parent"+(i+1)));
+						input.setAttribute("class","Parent");
+						input.setAttribute("placeholder","Parent");
+					}
+					cell.appendChild(input);
+					trow.appendChild(cell);
+				}
+				tbody.appendChild(trow);
+			}
+			table.appendChild(tbody);
+			div.appendChild(table);
+			const button = document.createElement("button");
+			button.setAttribute("class","btn");
+			button.setAttribute("onclick","insert()");
+			button.innerText = "Add";
+			div.appendChild(button);
+			document.body.appendChild(div);
+		}
+		function insert()
+		{
+			for(let i=0; i<pair; i++)
+			{
+				var parentName = document.getElementById("Parent"+(i+1)).value;
+				var childName = document.getElementById("Child"+(i+1)).value;
+				relation.push({parent:parentName,child:childName});
+			}
+			const div = document.createElement("div");
+			div.setAttribute("class","Name");
+			div.setAttribute("id","nameEntry");
+			const label = document.createElement("label");
+			label.setAttribute("for","Name");
+			label.innerText = "Name :";
+			div.appendChild(label);
+			const input = document.createElement("input");
+			input.setAttribute("name","Name");
+			input.setAttribute("type","text");
+			input.setAttribute("id","Name");
+			input.setAttribute("placeholder","Name");
+			div.appendChild(input);
+			const button = document.createElement("button");
+			button.setAttribute("onclick","findGrandChild()");
+			button.setAttribute("name","action");
+			button.setAttribute("id","find");
+			button.innerText = "Find";
+			div.appendChild(button);
+			document.body.appendChild(div);
+		}
+		function findGrandChild()
+		{
+			let grandFather = document.getElementById('Name').value;
+			var grandChild = [];
+			let i = 0;
+			for(let obj in relation)
+			{
+				if(relation[obj].parent == grandFather)
+				{
+					let name = relation[obj].child;
+					for(let childObj in relation)
+					{
+						if(relation[childObj].parent==name)
+						{
+							grandChild[i++] = relation[childObj].child;
+						}
+					}
+				}
+			}
+			let disp;
+			const div = document.createElement("div");
+			div.setAttribute("class","display");
+			div.setAttribute("id","grandChildren");
+			document.body.appendChild(div);
+			const para = document.createElement("p");
+			para.setAttribute("id","demo");
+			div.appendChild(para);
+			if(grandChild[0] == undefined)
+			{
+				para.setAttribute("style","color:red");
+				div.appendChild(para);
+				disp = 'No GrandChildren';
+			}
+			else
+			{
+				div.appendChild(para);
+				disp = grandFather + " has " + grandChild.length + " grand children.";
+				let j=1;
+				for(let i in grandChild)
+				{
+					const names = document.createElement("p");
+					names.setAttribute("id","demo"+i);
+					div.appendChild(names);
+					var name = j++ + "." + grandChild[i];
+					document.getElementById("demo"+i).innerText = name;
+				}
+			}
+			document.getElementById("demo").innerText = disp;
+		}
+//		document.getElementById("demo").innerHTML = grandChild;
+//		document.write(" = "+grandChild.length);
+	</script>
+		<div>
+			<label for="pairs">Enter the number of pairs :</label>
+			<input name="Pairs" type="number" id="Pairs" min=0 required>
+			<button onclick="enterPair()" class="btn" name="action">GO</button>
+		</div>
+		<!-- <div style="margin-left:43%;margin-top:18%;">
+			<label for="Name">Name :</label>
+			<input name="Name" type="text" id="Name" placeholder="Name" value="Ram" required>
+			<button onclick="findGrandChild()" name="action">find</button>
+		</div>
+		<div id="demo" style="margin-left:43%;padding-top:2%">
+		<p></p>
+		</div> -->
+</body>
+</html>

@@ -1,0 +1,79 @@
+package controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.bankingapplication.AccountDetails;
+import model.bankingapplication.Administration;
+import model.bankingapplication.Modules;
+import model.bankingapplication.UserException;
+
+@WebServlet("/dummyServlet")
+public class DummyServlet extends HttpServlet
+{
+	private static final long serialVersionUID = 1L;
+    public DummyServlet()
+    {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		try
+		{
+			runner(request,response);
+		}
+		catch (ServletException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (UserException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		try
+		{
+			runner(request,response);
+		}
+		catch (ServletException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (UserException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	private void runner(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, UserException
+	{
+		Administration admin = new Modules();
+		PrintWriter out = response.getWriter();
+		String choice = request.getParameter("action");
+		if(choice.equals("allAccounts"))
+		{
+			Map<Integer,Map<String,AccountDetails>> accountsListHm = admin.getAllAccounts();
+		}
+		if(choice.equals("hello"))
+		{
+			String intro = "Hello World";
+			out.print(intro);
+		}
+	}
+}

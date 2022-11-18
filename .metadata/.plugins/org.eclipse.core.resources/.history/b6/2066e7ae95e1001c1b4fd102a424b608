@@ -1,0 +1,36 @@
+package normal;
+
+public class KKKK 
+{
+
+	public static void main(String[] args) 
+	{
+		
+
+	}
+	
+	static void toSort(int array1[],int array2[])
+	{
+		
+		int length1=array1.length;
+		
+		int length2=array2.length;
+		
+		
+		int i=0,j=0;
+		
+		
+		while( i<length1  &&  j<length2  )
+		{
+			if(  array1[i]<array2[j]  )
+			{
+				  i++;
+			}
+			
+			
+		}
+		
+		
+	}
+
+}

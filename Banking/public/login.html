@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>User Login</title>
+		<style>
+			table
+			{
+			font-size:150%;
+			margin-left:auto;
+			margin-right:auto;
+			}
+			h1
+			{
+			margin-top:18%;
+			text-align: center;
+			}
+			h2
+			{
+			text-align: center;
+			}
+			div
+			{
+			padding: 20px;
+			}
+			button
+			{
+			padding:10px 24px;	
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Great Indian Bank</h1>
+		<h2>User Login</h2>
+		<table>
+			<tr>
+				<td><label for="UserId">User ID : </label></td>
+				<td><input type="number" id="UserId" placeholder="Enter the user ID" min=0></td>
+			</tr>
+			<tr>
+				<td><label for="Password">Password : </label></td>
+				<td><input type="password" id="Password" placeholder="Enter the Password"></td>
+			</tr>
+		</table>
+		<div class="login" id="input" style = "position:absolute; left:43%" >
+			<a href="home.html"><button>Customer</button></a>
+			<a href="admin.html"><button>Admin</button></a>
+		</div>
+	</body>
+</html>

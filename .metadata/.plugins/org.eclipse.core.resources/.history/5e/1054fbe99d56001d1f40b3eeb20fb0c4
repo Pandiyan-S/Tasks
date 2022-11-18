@@ -1,0 +1,5 @@
+@charset "UTF-8";
+frame.center
+{
+	background-color:rgb(204, 245, 255);
+}

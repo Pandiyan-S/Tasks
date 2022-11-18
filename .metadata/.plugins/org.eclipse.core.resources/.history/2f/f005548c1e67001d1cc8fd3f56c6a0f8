@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="UTF-8">
+		<title>account list</title>
+		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/CSS/style.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+			$(document).ready(function()
+			{
+				$("#accountDetails").hide();
+				$("#getTable").click(function()
+				{
+					var accounts = $("#getTable").val();
+					$.ajax(
+					{
+						type:'POST',
+						url:'dummyServlet',
+						data:{action:accounts},
+						success:function(result)
+						{
+							$("table").append("<tr id='lastRow'></tr>");
+							
+						}
+					});
+				});
+				$("#hello").click(function()
+				{
+					var declare = $("#hello").val();
+					$.ajax(
+					{
+						type:'POST',
+						url:'dummyServlet',
+						data:{action:declare},
+						success:function(result)
+						{
+							document.write("hoi");
+							$("say").append(result);
+						}
+					});
+				});
+			});
+		</script>
+		<style type="text/css">
+			.search:hover
+			{
+				color:maroon;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<button type="submit" value="allAccounts" id="getTable">Accounts</button>
+			<button type="submit" value="hello" id="hello">Hello</button>
+		</div>
+		<div class="Hello">
+			<p id="say"></p>
+		</div>
+		<div class="accountDetails">
+			<table>
+				<tr>
+					<th>Customer Id</th>
+					<th>Account Number</th>
+					<th>Branch</th>
+					<th>Account Type</th>
+					<th>Balance</th>
+					<th>Account status</th>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

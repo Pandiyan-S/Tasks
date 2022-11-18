@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;dynamic banking&apos; to &apos;dynamicBanking&apos;" description="Rename resource &apos;dynamic banking&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/dynamic banking" name="dynamicBanking" stamp="1666943268282" updateReferences="true"/>
+</session>

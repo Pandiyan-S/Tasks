@@ -1,0 +1,32 @@
+package zcoinexchange;
+
+public class RCTransaction 
+{
+       private int zId;
+       private String type;
+       
+       
+       
+       
+	public int getzId() {
+		return zId;
+	}
+	public void setzId(int zId) {
+		this.zId = zId;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	@Override
+	public String toString() {
+		return "RCTransaction [zId=" + zId + ", type=" + type + "]";
+	}
+       
+       
+       
+       
+       
+}

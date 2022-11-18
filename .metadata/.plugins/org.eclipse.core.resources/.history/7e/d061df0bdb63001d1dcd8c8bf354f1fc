@@ -1,0 +1,142 @@
+@charset "UTF-8";
+body
+{
+	background-color:#FFF2ED;
+	background-attachment:fixed;
+}
+h1
+{
+	font-size: 26px;
+	left:0;
+}
+input
+{
+	background-color: transparent;
+	border: none;
+	border-bottom:1px solid black;
+	width:99%;
+	height:40px;
+	padding-left: 3px;
+	box-sizing: border-box;
+}
+select
+{
+	background-color: transparent;
+	border: none;
+	border-bottom:1px solid black;
+	width:99%;
+	height:50px;
+}
+.centerDisplay
+{
+	font-size:20px;
+	line-height:1.6;
+	margin-left: 3%;
+}
+.adding
+{
+	padding-top:5%;
+	margin-left:20%;
+	margin-right:25%;
+}
+.name
+{
+	overflow:visible;
+}
+button
+{
+	font-size:20px;
+	width:120px;
+	border:none;
+	background-color:rgb(153, 102, 51);
+}
+.formSubmit
+{
+	height:50px;
+	text-align: center;
+	margin-left: 43%;
+}
+.inline
+{
+	display: flex;
+}
+.profile
+{
+	padding:10%;
+	margin-left: 5%;
+	width:80%;
+}
+p
+{
+	font-size:16px;
+}
+table
+{
+	width:90%;
+	text-align: center;
+}
+/* .formPanel
+{
+	margin-left:30%;
+	margin-right:30%;
+} */
+.box
+{
+	width:50%;
+}
+.error
+{
+	text-align: center;
+}
+.sideHead
+{
+	width:30%;
+	font-weight: normal;
+	color: #4A4846;
+}
+.hash
+{
+	color:red;
+	display: inline-block;
+}
+.hide
+{
+	visibility: hidden;
+}
+.show
+{
+	visibility: visible;
+}
+button:hover
+{
+	background-color:rgb(153, 102, 51);
+	color:white;
+}
+tr:nth-child(even)
+{
+	background-color:rgb(236, 217, 198);
+}
+tr:nth-child(even) button
+{
+	background-color:rgb(236, 217, 198);
+	width:100%;
+}
+tr:nth-child(even) button:hover
+{
+	background-color:rgb(153, 102, 51);
+	color:white;
+}
+tr:nth-child(odd)
+{
+	background-color:rgb(223, 191, 159);
+}
+tr:nth-child(odd) button
+{
+	background-color:rgb(223, 191, 159);
+	width:100%;
+}
+tr:nth-child(odd) button:hover
+{
+	background-color:rgb(153, 102, 51);
+	color:white;
+}

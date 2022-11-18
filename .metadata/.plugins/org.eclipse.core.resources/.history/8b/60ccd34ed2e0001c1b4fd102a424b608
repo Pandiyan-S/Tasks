@@ -1,0 +1,39 @@
+package zcoinexchange;
+
+import java.util.Scanner;
+
+public class ZCoinAccess 
+{
+
+	public static void main(String[] args) 
+	{
+		Scanner input=new Scanner(  System.in );
+		ZCoinApplication callAPI=new ZCoinApplication();
+		
+		while(true)
+		{
+		System.out.println("Press 0-->Sign-Up\nPress 1-->Sign-In\nPress 2-->Exit");
+		int option=input.nextInt();
+		
+		switch(option)
+		{
+		
+		
+		     
+		
+		
+		case 2:
+			break;
+	   
+		default:
+			System.out.println("Enter correct Number");
+			
+		}
+		
+		
+		
+		}
+		
+	}
+
+}

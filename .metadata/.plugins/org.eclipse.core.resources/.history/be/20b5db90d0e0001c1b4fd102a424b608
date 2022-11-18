@@ -1,0 +1,60 @@
+package zcoinexchange;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ZCoinManagement 
+{
+         private Map<String,User> userInfoMap=new HashMap<>();
+         
+         private Map<String,User> pendingList=new HashMap<>();
+         
+         private Map<Integer,Account> accDetailsMap=new HashMap<>();
+         
+         private Map<Integer,RCTransaction>  rcTransactionMap=new HashMap<>();
+         
+         
+         private Map<Integer,ZCoinTransaction> zCoinTransactionMap=new HashMap<>();
+         
+         
+         
+         public void addPendingUsers(User user)
+         {
+        	 pendingList.put( user.getMailId(),user   );
+         }
+         
+         
+         public void addActiveUsers( User user  )
+         {
+        	 userInfoMap.put(user.getMailId(), user);
+         }
+         
+         
+         public void addAccDetails(Account account)
+         {
+        	 accDetailsMap.put(account.getzId(), account);
+         }
+         
+         public void addRCTransaction(RCTransaction rcTransaction)
+         {
+        	 rcTransactionMap.put(rcTransaction.getzId(),rcTransaction);
+         }
+         
+         public void addAccDetails(ZCoinTransaction zCoinTransaction)
+         {
+        	 zCoinTransactionMap.put( zCoinTransaction.getToZID(),zCoinTransaction  );
+         }
+         
+         
+         public User getUserInfo(String mailId)
+         {
+        	 return userInfoMap.get(mailId);
+         }
+         
+         public Account getAccount(int zID)
+         {
+        	 return accDetailsMap.get(zID);
+         }
+         
+         
+}

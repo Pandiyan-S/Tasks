@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy package &apos;stringbuilder&apos; to &apos;task3/src&apos;&#x0A;- Original project: &apos;Task4&apos;&#x0A;- Destination element: &apos;task3/src&apos;&#x0A;- Original element: &apos;Task4/src/stringbuilder&apos;" description="Copy package" destination="=task3/src" element1="/src&lt;stringbuilder" flags="589830" fragments="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1663593760072" version="1.0"/>
+</session>

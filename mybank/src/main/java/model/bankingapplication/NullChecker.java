@@ -8,7 +8,14 @@ public class NullChecker
 	{
 		if(Objects.isNull(obj))
 		{
-			throw new UserException("the value is null ");
+			throw new UserException("The value is null ");
+		}
+	}
+	public static void check(Object obj,String str) throws UserException
+	{
+		if(Objects.isNull(obj))
+		{
+			throw new UserException(str + " is null ");
 		}
 	}
 }

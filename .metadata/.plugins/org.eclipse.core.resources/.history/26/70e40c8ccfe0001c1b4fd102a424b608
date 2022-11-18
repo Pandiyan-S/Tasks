@@ -1,0 +1,44 @@
+package zcoinexchange;
+
+public class Account 
+{
+      private String mailId;
+      private int zId;
+      private double availableRCAmount;
+      private int availableZCoin;
+	public String getMailId() {
+		return mailId;
+	}
+	public void setMailId(String mailId) {
+		this.mailId = mailId;
+	}
+	public int getzId() {
+		return zId;
+	}
+	public void setzId(int zId) {
+		this.zId = zId;
+	}
+	public double getAvailableRCAmount() {
+		return availableRCAmount;
+	}
+	public void setAvailableRCAmount(double availableRCAmount) {
+		this.availableRCAmount = availableRCAmount;
+	}
+	public int getAvailableZCoin() {
+		return availableZCoin;
+	}
+	public void setAvailableZCoin(int availableZCoin) {
+		this.availableZCoin = availableZCoin;
+	}
+	@Override
+	public String toString() {
+		return "Account [mailId=" + mailId + ", zId=" + zId + ", availableRCAmount=" + availableRCAmount
+				+ ", availableZCoin=" + availableZCoin + "]";
+	}
+      
+      
+      
+      
+      
+      
+}

@@ -1,0 +1,25 @@
+package normal;
+
+public class Normal 
+{
+
+	public static void main(String[] args) 
+	{
+		int firstArray[]= {2,3,6,7,9};
+      
+		int secondArray[]= {1,4,8,10};
+		
+		int k=1;
+		
+		System.out.println( findNumber(firstArray,secondArray,k)  );
+		
+	}
+	
+	static int findNumber(int array1[],int array2[],int position)
+	{
+		return 0;
+	}
+	
+	
+
+}

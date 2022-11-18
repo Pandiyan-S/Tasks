@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body style="background-color:#BCE1F3;">
+		<script>
+		function findGrandChild(grandFather)
+		{
+			var relation =
+			{
+				Ram:["Ravi","Sita"],
+				Ravi:["Siva","Raghu"],
+				Siva:["Sam"],
+				Raghu:["Tom"],
+				Tom:["Jerry"],
+				Sita:["Sethu"]
+			};
+			let i = 0;
+			var child = relation[grandFather];
+			document.write(child.length);
+			var grandChild = [];
+			for(let x of child)
+			{
+				for(let y of relation[x])
+				{
+					i++;
+					grandChild.push(y);
+				}
+			}
+			document.write(grandChild.length);
+			let disp;
+			if(i === 0)
+			{
+				document.write("0");
+				disp = '<p style="color:red">No GrandChildren</p>';
+			}
+			else
+			{
+				disp = "<p>"+grandFather;
+				disp += " has " + grandChild.length + " grand children: <br><br>";
+				let j=1;
+				for(let i of grandChild)
+				{
+					disp += j++ + ". " + i +"<br>";
+				}
+				disp += "</p>";
+			}
+			document.getElementById("demo").innerHTML = disp;
+		}
+//		document.getElementById("demo").innerHTML = grandChild;
+//		document.write(" = "+grandChild.length);
+	</script>
+		<div style="margin-left:43%;margin-top:18%;">
+			<label for="Name">Name :</label>
+			<input name="Name" type="text" id="Name" placeholder="Name" value="Ram" required>
+			<button onclick="findGrandChild(document.getElementById('Name').value)" name="action">find</button>
+		</div>
+		<div id="demo" style="margin-left:43%;padding-top:2%">
+		<p></p>
+		</div>
+	</body>
+</html>

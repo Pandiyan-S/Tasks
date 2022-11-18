@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Burger Shop</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+			$(document).ready(function()
+			{
+				$(".burgerOfTheDay").hide();
+				$(".MakeYourBurger").hide();
+				$(".invoice").hide();
+
+				$("#BOTD").click(function()
+				{
+					$(".pg1").hide();
+					$(".burgerOfTheDay").show();
+					let crust = 
+					{
+						1:["Hard",10],
+						2:["Thin",10],
+						3:["Soft",12]
+					};
+					let filling = 
+					{
+						1:["Chicken Tikka",120],
+						2:["Paneer Tikka",100],
+						3:["Turkey Meat",130]
+					};
+					let toppings = 
+					{
+						1:["Cucumber",25],
+						2:["Tomato",20],
+						3:["Meat Strip",45],
+						4:["cabbage",20]
+					};
+					let crustChoice = Math.floor((Math.random() * 3) + 1);
+					for(let x of crust[crustChoice])
+					{
+						$("#bdrow1").append("<td>"+x+"</td>")
+					}
+					let fillingChoice = Math.floor((Math.random() * 3) + 1);
+					for(let x of filling[fillingChoice])
+					{
+						$("#bdrow2").append("<td>"+x+"</td>")
+					}
+					let toppingChoice = Math.floor((Math.random() * 4) + 1);
+					for(let x of toppings[toppingChoice])
+					{
+						$("#bdrow3").append("<td>"+x+"</td>")
+					}
+					let total = crust[crustChoice][1]+filling[fillingChoice][1]+toppings[toppingChoice][1];
+					
+					$("#bdrow4").append("<td>₹"+total+"</td>");
+					$("#bdrow4").hide();
+					if(fillingChoice == 2 && toppingChoice!=3)
+					{
+						$("#preferance").append("This is a veg burger").attr("style","color:green");
+					}
+					else
+					{
+						$("#preferance").append("This is a non-veg burger").attr("style","color:red");
+					}
+				});
+				$("#order").click(function()
+				{
+					$("#bdrow4").show();
+				});
+				$("#Veg").click(function()
+				{
+					$(".burgerOfTheDay").hide();
+					$(".MakeYourBurger").show();
+					$("#make").show();
+					$(".NV").hide();
+				});
+				$("#Non-veg").click(function()
+				{
+					$(".burgerOfTheDay").hide();
+					$(".MakeYourBurger").show();
+					$("#make").show();	
+					$(".NV").show();
+				});
+				$("input[name='toppings']").on('change', function()
+				{
+					if($(this).siblings(':checkbox:checked').length >= 3)
+					{
+						this.checked = false;
+					}
+				});
+				$("#submit").click(function()
+				{
+					var crust = $(".crust:checked").val();
+					var fill = $(".filling:checked").val();
+					var top =[];
+					var topId = [];
+					$(".toppings:checked").each(function(i)
+					{
+						top[i] = $(this).val();
+						topId[i] = $(this).attr('id');
+					});
+					if(fill && crust)
+					{
+						$(".MakeYourBurger").hide();
+						$(".invoice").show();
+						$("#row6").hide();
+						$("#row1").append("<td>"+$(".crust:checked").attr('id')+"</td>");
+						$("#row1").append("<td>₹"+crust+"</td>");
+						$("#row2").append("<td>"+$(".filling:checked").attr('id')+"</td>");
+						$("#row2").append("<td>₹"+fill+"</td>");
+						switch(top.length)
+						{
+						case 0:
+							$("#row3").hide();
+						case 1:
+							$("#row4").hide();
+						case 2:
+							$("#row5").hide();
+							break;
+						case 3:
+							$("#row6").show();
+							break;
+						}
+						switch(top.length)
+						{
+						case 3:
+							$("#row5").append("<td>"+topId[2]+"</td>");
+							$("#row5").append("<td>₹"+top[2]+"</td>");
+						case 2:
+							$("#row4").append("<td>"+topId[1]+"</td>");
+							$("#row4").append("<td>₹"+top[1]+"</td>");
+						case 1:
+							$("#row3").append("<td>"+topId[0]+"</td>");
+							$("#row3").append("<td>₹"+top[0]+"</td>");
+							break;
+						}
+						var cost = Number(0);
+						for(let i=0; i<top.length; i++)
+						{
+							cost += Number(top[i]);
+						}
+						cost += Number(crust) + Number(fill)
+						if(top.length == 3)
+						{
+							var disc = Math.min.apply(Math,top);
+							$("#row6").append("<td>₹"+disc+"</td>");
+							cost -= Number(disc);
+						}
+						$("#row7").append("<td>₹"+cost+"</td>");
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Welcome to BIG BURGERS</h1>
+		<div class="pg1" id="daily">
+				<button class="dayOrNot" id="BOTD">Get Daily Burger</button>
+				<button class="NoV" id="Veg" value="V">Veg</button>
+				<button class="NoV" id="Non-veg" value="NV">Non-Veg</button>
+		</div>
+		<div class="burgerOfTheDay">
+			<h2>Burger of the Day</h2>
+			<table id="special">
+				<tr id="bdrow1">
+					<th>Crust</th>
+				</tr>
+				<tr id="bdrow2">
+					<th>Filling</th>
+				</tr>
+				<tr id="bdrow3">
+					<th>Topping</th>
+				</tr>
+				<tr id="bdrow4">
+					<td colspan="2">Total Amount</td>
+				</tr>	
+			</table>
+			<p class="Message" id="preferance"></p>
+			<button class="dayOrNot" id="order">Get Daily Burger</button>
+		</div>
+		<div class="MakeYourBurger">
+			<h2>Create Your Own Burger</h2>
+			<div id="make">
+				<h3>Choose Your Crust</h3>
+				<input class="crust" type="radio" id="hard" name="crust" value="10" required>
+				<label for="hard">1. Hard - 10₹</label>
+				<input class="crust" type="radio" id="thin" name="crust" value="10" required>
+				<label for="thin">2. Thin - 10₹</label>
+				<input class="crust" type="radio" id="soft" name="crust" value="12" required>
+				<label for="soft">3. Soft - 12₹</label>
+				
+				<h3>Choose Your Filling</h3>
+				<input class="NV filling" type="radio" id="ChickenTikka" name="filling" value=120 required>
+				<label class="NV" for="ChickenTikka">1. Chicken Tikka - 120 ₹</label>
+				<input class="V filling" type="radio" id="PaneerTikka" name="filling" value=100 required>
+				<label class="V" for="PaneerTikka">2. Paneer Tikka - 100 ₹</label>
+				<input class="NV filling" class="NV" type="radio" id="TurkeyMeat" name="filling" value=130 required>
+				<label class="NV" for="TurkeyMeat">3. Turkey Meat - 130 ₹</label>
+				
+				<h3>Choose Your Toppings</h3>
+				<input class="V toppings" type="checkbox" id="Cucumber" name="toppings" value=25>
+				<label class="V" for="Cucumber">1. Cucumber - 25 ₹</label>
+				<input class="V toppings" type="checkbox" id="Tomato" name="toppings" value=20>
+				<label class="V" for="Tomato">2. Tomato - 20 ₹</label>
+				<input class="NV toppings" class="NV" type="checkbox" id="MeatStrip" name="toppings" value=45>
+				<label class="NV" for="MeatStrip">3. Meat strip - 45 ₹</label>
+				<input class="V toppings" type="checkbox" id="Cabbage" name="toppings" value=20>
+				<label class="V" for="Cabbage">4. Cabbage - 20 ₹</label><br>
+				<input type="submit" id="submit" value="Submit">
+			</div>
+		</div>
+		<div class="invoice">
+			<table id="special">
+				<tr id="row1">
+					<th>Crust</th>
+				</tr>
+				<tr id="row2">
+					<th>Filling</th>
+				</tr>
+				<tr id="row3">
+					<th>Topping 1</th>
+				</tr>
+				<tr id="row4">
+					<th>Topping 2</th>
+				</tr>
+				<tr id="row5">
+					<th>Topping 3</th>
+				</tr>
+				<tr id="row6">
+					<td colspan="2">Discount</td>
+				</tr>
+				<tr id="row7">
+					<td colspan="2">Total Amount</td>
+				</tr>	
+			</table>
+		</div>
+	</body>
+</html>

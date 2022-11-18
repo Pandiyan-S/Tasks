@@ -1,0 +1,109 @@
+package zcoinexchange;
+
+import java.util.Scanner;
+
+public class ZCoinAccess 
+{
+
+	public static void main(String[] args) 
+	{
+		Scanner input=new Scanner(  System.in );
+		ZCoinApplication callAPI=new ZCoinApplication();
+		
+		while(true)
+		{
+		System.out.println("Press 0-->Sign-Up\nPress 1-->Sign-In\nPress 2-->Exit");
+		int option=input.nextInt();
+		input.nextLine();
+		switch(option)
+		{ 
+		  case 0:
+		        
+			  System.out.println("Enter your Name");
+			  String name=input.nextLine();
+			  
+			  System.out.println("Enter your mobleNumber");
+			  long mobileNo=input.nextLong();
+			  
+			  System.out.println("Enter your mail Id");
+			  String mailId=input.nextLine();
+			  
+			     if(!mailId.contains("@gmail.com"))
+			     {
+			    	 mailId+="@gmail.com";
+			     }
+			     String password="";
+			     
+		while(true)	     
+		{	     
+			   while(true )  
+			   {
+			  System.out.println("Enter the password");
+			   password=input.nextLine();
+			  
+			  System.out.println("Re-Wnter the password");
+			  String reEnterPassword=input.nextLine();
+			    
+			   if(!password.equals(reEnterPassword))
+			   {
+				   System.out.println("Password mismatch");
+			   }
+			   
+			   else
+			   {
+				   System.out.println("Password match");
+				   break;
+			   }
+			  
+			   }		
+			   
+			   
+			   
+		
+			   System.out.println("Enter the HId given by government");
+			   int hID=input.nextInt();
+			   
+			   System.out.println("Give the Initial Deposit Amount");
+			   
+			   double amount=input.nextLong();
+			   
+			   User user =new User(  name,mailId,password,mobileNo,hID,amount  );
+			   
+			     if( !callAPI.passwordCheck(user) )
+			     {
+			    	 System.out.println("Enter the Strong password");
+			     }
+			     else
+			     {
+			    	 
+			    	 callAPI.signUp(user);
+			    	 
+			    	 break;
+			     }
+			   
+		}	   
+		   case 2:
+			   
+			   
+			   System.out.println("Enter your mailID");
+			   String mailID=input.nextLine();
+			   
+			   System.out.println("Enter your password");
+			   String pass=input.nextLine();
+			   
+			   
+			   
+			   break;
+	   
+		default:
+			System.out.println("Enter correct Number");
+			
+		}
+		
+		
+		
+		}
+		
+	}
+
+}

@@ -1,0 +1,76 @@
+package zcoinexchange;
+
+public class User 
+{
+      
+	
+	private String name;
+	private String mailId;
+	private String password;
+	private long mobileNo;
+	private int hId;
+	private double rcAmount;
+
+
+	
+	
+	
+	
+	public User(String name, String mailId, String password, long mobileNo, int hId, double rcAmount) 
+	{
+		
+		this.name = name;
+		this.mailId = mailId;
+		this.password = password;
+		this.mobileNo = mobileNo;
+		this.hId = hId;
+		this.rcAmount = rcAmount;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getMailId() {
+		return mailId;
+	}
+	public void setMailId(String mailId) {
+		this.mailId = mailId;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public long getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(long mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public int gethId() {
+		return hId;
+	}
+	public void sethId(int hId) {
+		this.hId = hId;
+	}
+	public double getRcAmount() {
+		return rcAmount;
+	}
+	public void setRcAmount(double rcAmount) {
+		this.rcAmount = rcAmount;
+	}
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", mailId=" + mailId + ", password=" + password + ", mobileNo=" + mobileNo
+				+ ", hId=" + hId + ", rcAmount=" + rcAmount + "]";
+	}
+	
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,9 @@
+package zcoinexchange;
+
+public class Account 
+{
+      private String mailId;
+      private int zId;
+      private double availableRCAmount;
+      private int available aCoin;
+}

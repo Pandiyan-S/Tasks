@@ -1,0 +1,11 @@
+package zcoinexchange;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class zCoinManagement 
+{
+         private Map<String,User> userInfoMap=new HashMap<>();
+         
+         
+}

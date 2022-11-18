@@ -1,0 +1,12 @@
+package zcoinexchange;
+
+public class ZCoinTransaction 
+{
+     private int fromZID;
+     private int toZID;
+     private int zCoinWallet;
+     private int zCoin;
+     
+   
+     
+}

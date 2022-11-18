@@ -1,0 +1,68 @@
+package zcoinexchange;
+
+import java.util.regex.Pattern;
+
+public class ZCoinApplication 
+{
+	
+	ZCoinManagement cache=new ZCoinManagement(); 
+	
+	
+	private String adminMailID="admin@gmail.com";
+	private String adminPassword="admin";
+	
+       public boolean passwordCheck(User user)
+       {
+    	   String password=user.getPassword();
+    	   
+    	   String mailId=user.getMailId();
+    	   
+    	   int position=mailId.lastIndexOf('@');
+    	   
+    	   
+    	   String userName=mailId.substring(0,position);
+    	   
+    	   if(password.length()<8 || password.equals(user.getName() )  || 
+    			   password.equals(user.getMobileNo()) || password.equals(userName) )
+    	   {
+    		   return false;
+    	   }
+    	   
+    	   if(!Pattern.matches( "(?=.*[A-Z]) ( ?=.*[a-z] ) ( ?=.*[0-9] ) (?=.*[!#%<>&\\*] ).{8,} "
+    			   , password))
+    	   {
+    		   return false;
+    	   }
+    	   
+    	    return true;
+    	   
+    	   
+    	   
+       }
+       
+       public String getAdminMailId()
+       {
+    	   return adminMailID;
+       }
+       
+       public String getAdminPassword()
+       {
+    	   return adminPassword;
+       }
+       
+       public void signUp(User user)
+       {
+    	   cache.addPendingUsers(user);
+       }
+       
+       public double zCoinToRC(int zCoin)
+       {
+    	  double commission= zCoin*(0.15/100);
+    	  return zcoin-commission;
+    	  
+       }
+       
+       
+       
+       
+}

@@ -1,0 +1,7 @@
+package zcoinexchange;
+
+public class Transaction 
+{
+       private int zId;
+       
+}

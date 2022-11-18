@@ -1,0 +1,9 @@
+package zcoinexchange;
+
+public class RCTransaction 
+{
+       private int zId;
+       
+       
+       
+}

@@ -1,0 +1,53 @@
+package bankingapplication;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import check.UserException;
+
+public interface StoreageLayer {
+
+	boolean verifyPassword(int id, String password) throws UserException, SQLException;
+
+	void login(int id) throws SQLException;
+
+	boolean isAdmin(int id) throws SQLException;
+
+	Map<String, AccountDetails> getAccounts(int id) throws SQLException;
+
+	Map<Integer, Customer> getCustomers() throws SQLException, UserException;
+
+	Customer getMyCustomerInfo(int id) throws SQLException;
+
+	Admin getMyAdminInfo(int id) throws SQLException;
+
+	void transaction(Transaction change) throws SQLException, UserException;
+
+	Map<String, Transaction> transactionToApprove() throws SQLException, UserException;
+
+	void approveTransaction(Transaction change) throws SQLException, UserException;
+
+	String currentStatus(long transactionNumber) throws SQLException, UserException;
+
+	float getAccountBalance(String accNo) throws SQLException, UserException;
+
+	List<Transaction> transactionList(String accNo) throws SQLException, UserException;
+
+	void changePassword(int id, String oldPassword, String newPassword) throws SQLException, UserException;
+
+	Map<Integer, Map<String, AccountDetails>> allAccounts() throws SQLException, UserException;
+
+	Map<String, Map<Long, Transaction>> allTransactions(int id) throws SQLException, UserException;
+
+	boolean checkIfIn(String accNo) throws SQLException, UserException;
+
+	boolean checkIfIn(String accNo, int id) throws SQLException, UserException;
+
+	void logout(int id) throws SQLException;
+
+	boolean getIfActive(String accNo) throws SQLException;
+
+	boolean checkIfIn(long transaction_id, int id) throws UserException, SQLException;
+
+}

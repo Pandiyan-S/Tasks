@@ -1,0 +1,13 @@
+package zcoinexchange;
+
+public class ZCoinApplication 
+{
+       public boolean passwordCheck(User user)
+       {
+    	   
+    	   
+    	   
+    	   
+    	   
+       }
+}

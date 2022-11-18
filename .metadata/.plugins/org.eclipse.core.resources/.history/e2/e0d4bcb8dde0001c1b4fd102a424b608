@@ -1,0 +1,41 @@
+package zcoinexchange;
+
+public class RCTransaction 
+{
+       private int zId;
+       private String type;
+       private double amount;
+       private double availableBalance;
+       
+       
+       
+	public int getzId() {
+		return zId;
+	}
+	public void setzId(int zId) {
+		this.zId = zId;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public double getAmount() {
+		return amount;
+	}
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+	public double getAvailableBalance() {
+		return availableBalance;
+	}
+	public void setAvailableBalance(double availableBalance) {
+		this.availableBalance = availableBalance;
+	}
+ 
+       
+       
+       
+       
+}

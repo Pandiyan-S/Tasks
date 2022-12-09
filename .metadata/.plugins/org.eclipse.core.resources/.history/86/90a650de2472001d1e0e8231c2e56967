@@ -1,0 +1,89 @@
+package onlinereservationsystem;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.logging.Logger;
+
+import check.UserException;
+
+public class ReservationRunner
+{
+	public static void main(String[] args)
+	{
+		LogicalLayer logic = new LogicalLayer();
+		Logger logger = Logger.getLogger("Exception");
+		/*
+		 * UserInfo user = new UserInfo(); user.setUserId("1");
+		 * user.setPassword("I@minevitable"); Map<String,UserInfo> hm = new
+		 * HashMap<String,UserInfo>(); hm.put(user.getUserId(), user); user = new
+		 * UserInfo(); user.setUserId("2"); user.setPassword("Darth^ader");
+		 * hm.put(user.getUserId(), user); user = new UserInfo(); user.setUserId("3");
+		 * user.setPassword("RaonMiru"); hm.put(user.getUserId(), user);
+		 * logic.createUser(hm);
+		 */
+		Map<String,Integer> stationSeat = new HashMap<String,Integer>();
+		stationSeat.put("Chennai", 10);
+		stationSeat.put("Chengalpet", 10);
+		stationSeat.put("Trichi", 10);
+		logic.createCompartment(stationSeat);
+		
+//		System.out.println("Enter the user Id "); 
+//		Scanner sc = new Scanner(System.in);
+//		String userId = sc.nextLine();
+//		System.out.println("Enter the Password ");
+//		String password = sc.nextLine();
+//		int cost = 0;
+//		try
+//			{
+//			logic.passwordVerification(userId,password);
+//			System.out.println("Choose the operation to be performed");
+//			System.out.println("1. Ticket Reservation");
+//			System.out.println("2. PNR enquiry");
+//			System.out.println("3. Cancellation");
+//			char choice  = sc.nextLine().charAt(0);
+//			char Station = ' ';
+//			char destination = ' ';
+//			switch(choice)
+//			{
+//			case '1':
+//				System.out.println("Choose the from station");
+//				System.out.println("1. Chennai");
+//				System.out.println("2. Chengalpet");
+//				System.out.println("3. Trichi");
+//				Station = sc.nextLine().charAt(0);
+//				System.out.println("Choose the to station");
+//				switch(Station)
+//				{
+//				case '1':
+//					System.out.println("1. Chengalpet");
+//					System.out.println("2. Trichi");
+//					System.out.println("3. Karaikudi");
+//					destination = sc.nextLine().charAt(0);
+//					switch(Station)
+//					{
+//					case '1':
+//						cost = 100;
+//						break;
+//					case '2':
+//						cost = 200;
+//						break;
+//					case '3':
+//						cost = 300;
+//						break;
+//					}
+//					int vac = logic.getVacancies("Chennai");
+//					System.out.println("The vacancies are " + vac);
+//					if(vac == 0)
+//					{
+//						System.out.println("The waitlist number is " + logic.getWaitList());
+//					}
+//				}
+//			}
+//		}
+//		catch(UserException e)
+//		{
+//			logger.severe(e.getMessage());
+//		}
+	}
+}

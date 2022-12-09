@@ -1,0 +1,122 @@
+package onlinereservationsystem;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+
+import check.UserException;
+
+public class LogicalLayer
+{
+	public void createUser(Map<String,UserInfo> hm)
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/passwords/password.ser";
+		store.writeIn(path, hm);
+	}
+	public void createWaitList(String doj)
+	{
+		StorageLayer store = new StorageLayer();
+		Queue<PassengerInfo> waitList = new LinkedList<>();
+		String path = "OnlineReservation/Tickets/"+doj+"/waitList.ser";
+		store.writeList(path, waitList);
+	}
+	public void createManifest(String doj)
+	{
+		StorageLayer store = new StorageLayer();
+		Map<String,List<PassengerInfo>> hm = new HashMap<String,List<PassengerInfo>>();
+		String path = "OnlineReservation/Tickets/"+doj+"/bookings.ser";
+		store.writeIn(path, hm);
+	}
+	public void createCompartment(String doj)
+	{
+		StorageLayer store = new StorageLayer();
+		Integer[] num = new Integer[16];
+		String path = "OnlineReservation/Tickets/"+doj+"/train.ser";
+		store.writeArray(path,num);
+	}
+	public int noOfPassengers(String doj) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/Tickets/"+doj+"/train.ser";
+		Integer[] num = store.readArray(path);
+		int len = 0;
+		for(int i:num)
+		{
+			if(i == 1)
+			{
+				len++;
+			}
+		}
+		return len;
+	}
+	public void passwordVerification(String userId,String password) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/passwords/password.ser";
+		Map<String,UserInfo> hm = store.readFrom(path);
+		if(!hm.containsKey(userId))
+		{
+			throw new check.UserException("Invalid User Id");
+		}
+		if(!hm.get(userId).getPassword().equals(password))
+		{
+			throw new check.UserException("Invalid Password");
+		}
+	}
+	public Queue<PassengerInfo> getWaitList(String doj) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/Tickets/"+doj+"/waitList.ser";
+		Queue<PassengerInfo> waitList = store.readList(path);
+		return waitList;
+	}
+	public int getWaitListLen(String doj) throws UserException
+	{
+		return getWaitList(doj).size();
+	}
+	public void find(String doj)
+	{
+		File file = new File("OnlineReservation/Tickets/"+doj);
+		if(file.exists())
+		{
+			return;
+		}
+		else
+		{
+			file.mkdir();
+			createWaitList(doj);
+			createManifest(doj);
+			createCompartment(doj);
+		}
+	}
+	public int book(PassengerInfo passenger) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/Tickets/"+passenger.getDoj()+"/train.ser";
+		Integer[] num = store.readArray(path);
+		int i;
+		for(i=0; i<16; i++)
+		{
+			if(num[i] == null)
+			{
+				num[i] = 1;
+				passenger.setSeatNo((i+1));
+				store.writeArray(path,num);
+				return 1;
+			}
+		}
+		return -1;
+	}
+	public void addToWaitList(PassengerInfo passenger) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/Tickets/"+passenger.getDoj()+"/waitList.ser";
+		Queue<PassengerInfo> waitList = store.readList(path);
+		waitList.add(passenger);
+		store.writeList(path, waitList);
+	}
+}

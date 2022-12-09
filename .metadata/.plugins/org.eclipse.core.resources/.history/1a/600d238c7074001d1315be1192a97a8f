@@ -1,0 +1,48 @@
+package onlinejobportal;
+
+public class JobDescription
+{
+	long jobId;
+	String title;
+	String degreeReq;
+	String companyId;
+	public long getJobId()
+	{
+		return jobId;
+	}
+	public void setJobId(long jobId)
+	{
+		this.jobId = jobId;
+	}
+	public String getTitle()
+	{
+		return title;
+	}
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
+	public String getDegreeReq()
+	{
+		return degreeReq;
+	}
+	public void setDegreeReq(String degreeReq)
+	{
+		this.degreeReq = degreeReq;
+	}
+	public String getCompanyId()
+	{
+		return companyId;
+	}
+	public void setCompanyId(String companyId)
+	{
+		this.companyId = companyId;
+	}
+	@Override
+	public String toString()
+	{
+		return "\njobId = " + jobId + "\ntitle = " + title + "\ndegreeReq = " + degreeReq + "\ncompanyId = "
+				+ companyId;
+	}
+	
+}

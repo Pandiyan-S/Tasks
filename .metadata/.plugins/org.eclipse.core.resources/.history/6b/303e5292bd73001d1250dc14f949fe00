@@ -1,0 +1,66 @@
+package virtualclassroom;
+
+import java.util.Scanner;
+
+import check.UserException;
+
+public class ClassroomRunner
+{
+	public static void main(String[] args)
+	{
+		LogicalLayer logic = new LogicalLayer();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Press 1 to sign up");
+		System.out.println("Press any other key to sign in");
+		char perform = sc.nextLine().charAt(0);
+		if(perform == 1)
+		{
+			System.out.println("Enter the Password");
+			String password = sc.nextLine();
+			System.out.println("Enter the Name");
+			String name = sc.nextLine();
+			System.out.println("Enter the Date of Birth");
+			String dob = sc.nextLine();
+			System.out.println("Enter the Phone Number");
+			long phNo = sc.nextLong();
+			System.out.println("Press 0 if you are an Admin");
+			System.out.println("Press 1 if you are a Teacher");
+			System.out.println("Press any other key if you are a student");
+			try
+			{
+				char type = sc.nextLine().charAt(0);
+				if(type == '0')
+				{
+					logic.sendRequest(password,name,dob,phNo,"Admin");
+				}
+				else if(type == '1')
+				{
+					logic.sendRequest(password,name,dob,phNo,"Teacher");
+				}
+				else
+				{
+					logic.sendRequest(password,name,dob,phNo,"Student");
+				}
+				System.out.println("Request submitted");
+			}
+			catch (UserException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			try {
+				System.out.println("Enter the User Id");
+				int userId = sc.nextInt();
+				System.out.println("Enter the password");
+				sc.hasNextLine();
+				String password = sc.nextLine();
+				UserInfo user = logic.findUser(userId,password);
+			} catch (UserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+}

@@ -1,0 +1,10 @@
+package virtualclassroom;
+
+public class UserInfo
+{
+	int userId;
+	String password;
+	String name;
+	String dob;
+	String type;
+}

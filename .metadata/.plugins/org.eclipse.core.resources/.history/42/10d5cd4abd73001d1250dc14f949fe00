@@ -1,0 +1,27 @@
+package virtualclassroom;
+
+import check.UserException;
+
+public class LogicalLayer
+{
+
+	public void sendRequest(String password, String name, String dob, long phNo, String type) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		UserInfo user = new UserInfo();
+		user.setPassword(password);
+		user.setName(name);
+		user.setDob(dob);
+		user.setPhoneNumber(phNo);
+		user.setType(type);
+		store.insertRequest(user);
+	}
+
+	public UserInfo findUser(int userId, String password)
+	{
+		StorageLayer store = new StorageLayer();
+		UserInfo user = store.findif(userId,password);
+		return user;
+	}
+	
+}

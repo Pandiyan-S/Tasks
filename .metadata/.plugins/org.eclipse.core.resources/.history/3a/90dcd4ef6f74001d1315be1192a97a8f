@@ -1,0 +1,9 @@
+package onlinejobportal;
+
+public class Company
+{
+	long companyId;
+	String password;
+	String Name;
+	String email;
+}

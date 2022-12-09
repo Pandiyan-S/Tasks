@@ -1,0 +1,35 @@
+package virtualclassroom;
+
+import java.util.Scanner;
+
+public class ClassroomRunner
+{
+	public static void main(String[] args)
+	{
+		LogicalLayer logic = new LogicalLayer();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Press 1 to sign up");
+		System.out.println("Press any other key to sign in");
+		char perform = sc.nextLine().charAt(0);
+		if(perform == 1)
+		{
+			System.out.println("Enter the Password");
+			String password = sc.nextLine();
+			System.out.println("Enter the Name");
+			String name = sc.nextLine();
+			System.out.println("Enter the Date of Birth");
+			String dob = sc.nextLine();
+			System.out.println("Press 1 if you are a teacher");
+			System.out.println("Press any other key if you are a student");
+			char type = sc.nextLine().charAt(0);
+			if(type == '1')
+			{
+				logic.sendRequest(password,name,dob,"Teacher");
+			}
+			else
+			{
+				logic.sendRequest(password,name,dob,"Student");
+			}
+		}
+	}
+}

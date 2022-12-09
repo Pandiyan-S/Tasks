@@ -1,0 +1,61 @@
+package onlinejobportal;
+
+import java.util.Scanner;
+
+public class JobRunner
+{
+	public static void main(String[] args)
+	{
+		LogicalLayer logic = new LogicalLayer();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter 1 sign up");
+		System.out.println("Enter any other key for sign in");
+		try
+		{
+			char choice = sc.nextLine().charAt(0);
+			if (choice == '1')
+			{
+				System.out.println("Enter 1 for organisation sign up");
+				System.out.println("Enter any other key for applicant sign up");
+				char type = sc.nextLine().charAt(0);
+				if (type == '1')
+				{
+					Company comp = new Company();
+					System.out.println("Enter the Company id");
+					long compId = sc.nextLong();
+					sc.nextLine();
+					if(logic.companyExist(compId))
+					{
+						System.out.println("sorry the Id already exists");
+					}
+					else
+					{
+						comp.setCompanyId(compId);
+						System.out.println("Enter the Password");
+						String password = sc.nextLine();
+						System.out.println("Enter the Company Name");
+						String name = sc.nextLine();
+						System.out.println("Enter the Email");
+						String email = sc.nextLine();
+						comp.setPassword(password);
+						comp.setName(name);
+						comp.setEmail(email);
+						logic.createCompany(comp);
+					}
+				}
+				else
+				{
+
+				}
+			}
+			else
+			{
+
+			} 
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+}

@@ -1,0 +1,57 @@
+package onlinereservationsystem;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+
+import check.UserException;
+
+public class LogicalLayer
+{
+	public void createUser(Map<String,UserInfo> hm)
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/passwords/password.ser";
+		store.writeIn(path, hm);
+	}
+	public void createWaitList(String doj)
+	{
+		StorageLayer store = new StorageLayer();
+		Queue<PassengerInfo> waitList = new LinkedList<>();
+		String path = "OnlineReservation/Tickets/"+doj+"/waitList.ser";
+		store.writeList(path, waitList);
+	}
+	public void createManifest(String doj)
+	{
+		StorageLayer store = new StorageLayer();
+		Map<Train,PassengerInfo> hm = new HashMap<Train,PassengerInfo>();
+		String path = "OnlineReservation/Tickets/"+doj+"/bookings.ser";
+		store.writeIn(path, hm);
+	}
+	public void passwordVerification(String userId,String password) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/passwords/password.ser";
+		Map<String,UserInfo> hm = store.readFrom(path);
+		if(!hm.containsKey(userId))
+		{
+			throw new check.UserException("Invalid User Id");
+		}
+		if(!hm.get(userId).getPassword().equals(password))
+		{
+			throw new check.UserException("Invalid Password");
+		}
+	}
+	public Queue<PassengerInfo> getWaitList(String doj) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/Tickets/"+doj+"/waitList.ser";
+		Queue<PassengerInfo> waitList = store.readList(path);
+		return waitList;
+	}
+	public int getWaitListLen(String doj) throws UserException
+	{
+		return getWaitList(doj).size();
+	}
+}

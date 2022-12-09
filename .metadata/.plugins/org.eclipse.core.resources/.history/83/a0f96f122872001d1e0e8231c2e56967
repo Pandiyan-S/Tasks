@@ -1,0 +1,59 @@
+package onlinereservationsystem;
+
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+
+import check.UserException;
+
+public class LogicalLayer
+{
+	public void createUser(Map<String,UserInfo> hm)
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/passwords/password.ser";
+		store.writeIn(path, hm);
+	}
+	public void createCompartment(Map<String,Integer> hm)
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/seats.ser";
+		store.writeIn(path, hm);
+	}
+	public void passwordVerification(String userId,String password) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/passwords/password.ser";
+		Map<String,UserInfo> hm = store.readFrom(path);
+		if(!hm.containsKey(userId))
+		{
+			throw new check.UserException("Invalid User Id");
+		}
+		if(!hm.get(userId).getPassword().equals(password))
+		{
+			throw new check.UserException("Invalid Password");
+		}
+	}
+	public int getVacancies(String from) throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/seats.ser";
+		Map<String,Integer> hm = store.readFrom(path);
+		return hm.get(from);
+	}
+	public Queue<PassengerInfo> getWaitList() throws UserException
+	{
+		StorageLayer store = new StorageLayer();
+		String path = "OnlineReservation/waitList.ser";
+		Queue<PassengerInfo> waitList = store.readList(path);
+		return waitList;
+	}
+	public String createWaitList()
+	{
+		StorageLayer store = new StorageLayer();
+		Queue<PassengerInfo> waitList = new LinkedList<>();
+		String path = "OnlineReservation/Waiting/waitList.ser";
+		store.writeList(path, waitList);
+		return null;
+	}
+}

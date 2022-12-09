@@ -1,0 +1,32 @@
+package onlinereservationsystem;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.Map;
+
+public class StorageLayer
+{
+	public void doesIdExist(String userId)
+	{
+		/*
+		 * try(FileWriter writer = new FileWriter(folder)) {
+		 * 
+		 * }
+		 */
+	}
+	public <K,V> void createUser(Map<K,V> hm)
+	{
+		try(FileOutputStream file = new FileOutputStream("OnlineReservation/passwords/password.ser");
+				ObjectOutputStream writer = new ObjectOutputStream(file);)
+		{
+			writer.writeObject(hm);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		} 
+	}
+}

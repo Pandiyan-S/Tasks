@@ -1,0 +1,124 @@
+package virtualclassroom;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import check.UserException;
+
+
+public class StorageLayer
+{
+	private static Connection connector()
+	{
+		String url = "jdbc:mysql://localhost:3306/virtualclassroom";
+		String userName = "Task10";
+		String password = "Thirsty@Elephant0241";
+		Connection connect = null;
+		try
+		{
+			connect = DriverManager.getConnection(url, userName, password);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return connect;
+	}
+	private void shutDown(Connection link,PreparedStatement state)
+	{
+		try
+		{
+			state.close();
+			link.close();
+		}
+		catch (SQLException e)
+		{
+			//e.printStackTrace();
+		}
+	}
+	public void insertRequest(UserInfo user) throws UserException
+	{
+		Connection wire = connector();
+		PreparedStatement query = null;
+		try
+		{
+			query = wire.prepareStatement("INSERT INTO UserInfo (password,name,dob,type,phoneNumber,status)"
+					+ " VALUES (?,?,?,?,?,'pending');");
+			query.setString(1, user.getPassword());
+			query.setString(2, user.getName());
+			query.setString(3, user.getDob());
+			query.setLong(4, user.getPhoneNumber());
+			query.setString(5, user.getType());
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			throw new UserException(e.getMessage(),e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+		}
+	}
+	public UserInfo findif(int userId, String password) throws UserException
+	{
+		Connection wire = connector();
+		PreparedStatement query = null;
+		UserInfo user = null;
+		try
+		{
+			query = wire.prepareStatement("SELECT FROM UserInfo WHERE userID = ?");
+			query.setInt(1, userId);
+			try(ResultSet rset = query.executeQuery())
+			{
+				rset.next();
+				if(rset.getString("password").equals(password) && rset.getString("status").equalsIgnoreCase("approved"))
+				{
+					user = new UserInfo();
+					user.setUserId(userId);
+					user.setPassword(password);
+					user.setName(rset.getString(3));
+					user.setDob(rset.getString(4));
+					user.setPhoneNumber(rset.getLong(5));
+					user.setType(rset.getString(6));
+				}
+			}
+			return user;
+		}
+		catch (SQLException e)
+		{
+			throw new UserException("The user id or password is invalid",e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+		}
+	}
+	public void updateUser(int userId, String name, String dob, long phNo) throws UserException
+	{
+		Connection wire = connector();
+		PreparedStatement query = null;
+		UserInfo user = null;
+		try
+		{
+			query = wire.prepareStatement("UPDATE UserInfo SET name = ?,dob = ?,phoneNumber = ? WHERE userID = ?");
+			query.setString(1, name);
+			query.setString(2, dob);
+			query.setLong(3, phNo);
+			query.setInt(4, userId);
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			throw new UserException(e.getMessage(),e);
+		}
+		finally
+		{
+			shutDown(wire,query);
+		}
+	}
+	
+}

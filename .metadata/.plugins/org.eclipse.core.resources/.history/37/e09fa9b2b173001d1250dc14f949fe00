@@ -1,0 +1,17 @@
+package virtualclassroom;
+
+public class LogicalLayer
+{
+
+	public void sendRequest(String password, String name, String dob, String type)
+	{
+		StoreageLayer store = new StoreageLayer();
+		UserInfo user = new UserInfo();
+		user.setPassword(password);
+		user.setName(name);
+		user.setDob(dob);
+		user.setType(type);
+		store.insertRequest(user);
+	}
+	
+}

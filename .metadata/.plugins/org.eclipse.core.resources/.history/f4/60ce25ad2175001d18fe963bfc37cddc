@@ -1,0 +1,26 @@
+package foodorderingsystem;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class FoodStorage
+{
+	private Map<String,Map<String,Integer>> dishes = new HashMap<>();
+	
+	public void initialize()
+	{
+		Map<String,Integer> price = new HashMap<>();
+		price.put("Sandwich", 70);
+		price.put("Pizza", 100);
+		price.put("Fried Rice", 95);
+		price.put("Parotta", 15);
+		price.put("Noodles", 75);
+		price.put("Chicken Rice", 80);
+		price.put("Chicken Briyani", 90);
+		price.put("Prawn", 120);
+		price.put("Faloda", 35);
+		dishes.put("Aarya_Bhavan", price);
+		dishes.put("Banu_Hotel", price);
+		dishes.put("SR_Bhavan", price);
+	}
+}

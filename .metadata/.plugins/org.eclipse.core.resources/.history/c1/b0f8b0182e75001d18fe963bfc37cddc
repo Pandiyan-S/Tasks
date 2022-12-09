@@ -1,0 +1,35 @@
+package foodorderingsystem;
+
+import java.util.Map;
+
+public class FoodLogic
+{
+
+	public boolean ifExist(String email)
+	{
+		FoodStorage store = new FoodStorage();
+		return store.checkAccount(email);
+	}
+	public boolean confirmPassword(String email, String password)
+	{
+		FoodStorage store = new FoodStorage();
+		return store.verifyPassword(email,password);
+	}
+
+	public void addCustomer(Customer cust)
+	{
+		FoodStorage store = new FoodStorage();
+		store.addCustomer(cust);
+	}
+	
+	public Map<String,Integer> findHotel(String hotel)
+	{
+		FoodStorage store = new FoodStorage();
+		return store.findHotel(hotel);
+	}
+	public Map<String, Integer> getFood()
+	{
+		FoodStorage store = new FoodStorage();
+		return store.getFood();
+	}
+}

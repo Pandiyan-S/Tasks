@@ -1,0 +1,10 @@
+package onlinejobportal;
+
+public class Applicant
+{
+	long applicantId;
+	String name;
+	String age;
+	String degree;
+	String email;
+}

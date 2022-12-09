@@ -1,0 +1,89 @@
+package onlinereservationsystem;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Map;
+import java.util.Queue;
+
+import check.UserException;
+
+public class StorageLayer
+{
+	@SuppressWarnings("unchecked")
+	public <K,V> Map<K, V> readFrom(String path) throws UserException
+	{
+		try(FileInputStream file = new FileInputStream(path);
+				ObjectInputStream reader = new ObjectInputStream(file);)
+		{
+			return (Map<K, V>) reader.readObject();
+		}
+		catch (ClassNotFoundException | IOException e)
+		{
+			throw new check.UserException("Resources not found");
+		}
+	}
+	public <K,V> void writeIn(String path,Map<K,V> hm)
+	{
+		try(FileOutputStream file = new FileOutputStream(path);
+				ObjectOutputStream writer = new ObjectOutputStream(file);)
+		{
+			writer.writeObject(hm);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		} 
+	}
+	public <T> void writeList(String path,Queue<T> waitList)
+	{
+		try(FileOutputStream file = new FileOutputStream(path);
+				ObjectOutputStream writer = new ObjectOutputStream(file);)
+		{
+			writer.writeObject(waitList);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public <T> Queue<T> readList(String path) throws UserException
+	{
+		try(FileInputStream file = new FileInputStream(path);
+				ObjectInputStream reader = new ObjectInputStream(file);)
+		{
+			return (Queue<T>) reader.readObject();
+		}
+		catch (ClassNotFoundException | IOException e)
+		{
+			throw new check.UserException("Resources not found");
+		}
+	}
+	public void writeArray(String path,Integer[] num)
+	{
+		try(FileOutputStream file = new FileOutputStream(path);
+				ObjectOutputStream writer = new ObjectOutputStream(file);)
+		{
+			writer.writeObject(num);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	public Integer[] readArray(String path) throws UserException
+	{
+		try(FileInputStream file = new FileInputStream(path);
+				ObjectInputStream reader = new ObjectInputStream(file);)
+		{
+			return (Integer[]) reader.readObject();
+		}
+		catch (ClassNotFoundException | IOException e)
+		{
+			throw new check.UserException("Resources not found");
+		}
+	}
+}

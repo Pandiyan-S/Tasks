@@ -1,0 +1,177 @@
+package virtualclassroom;
+
+import java.util.Scanner;
+
+import check.UserException;
+
+public class ClassroomRunner
+{
+	public void studentInterface(UserInfo user,Scanner sc) throws UserException
+	{
+		boolean truth = true;
+		LogicalLayer logic = new LogicalLayer();
+		while(truth)
+		{
+			System.out.println("Enter the operation to be performed");
+			System.out.println("1.Edit Profile");
+			System.out.println("2.Access Study Material");
+			System.out.println("3.Ask doubts");
+			System.out.println("4.Frequently asked questions");
+			int choice = sc.nextInt();
+			sc.hasNextLine();
+			switch(choice)
+			{
+			case 1:
+				System.out.println("Enter the new name");
+				String name = sc.nextLine();
+				System.out.println("Enter the Date of Birth");
+				String dob = sc.nextLine();
+				System.out.println("Enter the Phone Number");
+				long phNo = sc.nextLong();
+				logic.updateProfile(user.getUserId(),name,dob,phNo);
+				truth =false;
+				break;
+			case 2:
+				
+			}
+		}
+		
+	}
+	public void teacherInterface(UserInfo user,Scanner sc) throws UserException
+	{
+		boolean truth = true;
+		LogicalLayer logic = new LogicalLayer();
+		while(truth)
+		{
+			System.out.println("Enter the operation to be performed");
+			System.out.println("1.Edit Profile");
+			System.out.println("2.add or remove Study Material");
+			System.out.println("3.See all doubts");
+			System.out.println("4.Answer doubt");
+			int choice = sc.nextInt();
+			sc.hasNextLine();
+			switch(choice)
+			{
+			case 1:
+				System.out.println("Enter the new name");
+				String name = sc.nextLine();
+				System.out.println("Enter the Date of Birth");
+				String dob = sc.nextLine();
+				System.out.println("Enter the Phone Number");
+				long phNo = sc.nextLong();
+				logic.updateProfile(user.getUserId(),name,dob,phNo);
+				truth =false;
+				break;
+			case 2:
+				System.out.println("Enter 1 to remove materials");
+				System.out.println("Enter any other key to add materials");
+				char ch = sc.nextLine().charAt(0);
+				if(ch == '1')
+				{
+					System.out.println("Enter the material id of the material to be removed");
+					Long materialId = sc.nextLong();
+					sc.nextLine();
+					if(logic.checkId(user.getUserId(),materialId))
+					{
+						logic.deleteMaterial(materialId);
+					}
+					else
+					{
+						System.out.println("There is no such material uploaded by you");
+					}
+				}
+				else
+				{
+					System.out.println("Enter the topic");
+					String topic = sc.nextLine();
+					System.out.println("Enter the file type");
+					String fileType = sc.nextLine();
+					System.out.println("Enter the link");
+					String link = sc.nextLine();
+					logic.upload(user.getUserId(),topic,fileType,link);
+				}
+			}
+		}
+	}
+	public static void main(String[] args)
+	{
+		ClassroomRunner room = new ClassroomRunner();
+		LogicalLayer logic = new LogicalLayer();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Press 1 to sign up");
+		System.out.println("Press any other key to sign in");
+		char perform = sc.nextLine().charAt(0);
+		if(perform == 1)
+		{
+			System.out.println("Enter the Password");
+			String password = sc.nextLine();
+			System.out.println("Enter the Name");
+			String name = sc.nextLine();
+			System.out.println("Enter the Date of Birth");
+			String dob = sc.nextLine();
+			System.out.println("Enter the Phone Number");
+			long phNo = sc.nextLong();
+			System.out.println("Press 0 if you are an Admin");
+			System.out.println("Press 1 if you are a Teacher");
+			System.out.println("Press any other key if you are a student");
+			try
+			{
+				char type = sc.nextLine().charAt(0);
+				if(type == '0')
+				{
+					logic.sendRequest(password,name,dob,phNo,"Admin");
+				}
+				else if(type == '1')
+				{
+					logic.sendRequest(password,name,dob,phNo,"Teacher");
+				}
+				else
+				{
+					logic.sendRequest(password,name,dob,phNo,"Student");
+				}
+				System.out.println("Request submitted");
+			}
+			catch (UserException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			try
+			{
+				System.out.println("Enter the User Id");
+				int userId = sc.nextInt();
+				System.out.println("Enter the password");
+				sc.hasNextLine();
+				String password = sc.nextLine();
+				UserInfo user = logic.findUser(userId,password);
+				if(user == null)
+				{
+					System.out.println("The entered User ID or Password is invalid");
+				}
+				else
+				{
+					System.out.println("The user details are :");
+					System.out.println(user.toString());
+					if(user.getType().equalsIgnoreCase("Admin"))
+					{
+						room.adminInterface(user,sc);
+					}
+					else if(user.getType().equalsIgnoreCase("Teacher"))
+					{
+						room.teacherInterface(user,sc);
+					}
+					else
+					{
+						room.studentInterface(user,sc);
+					}
+				}
+			}
+			catch (UserException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+}

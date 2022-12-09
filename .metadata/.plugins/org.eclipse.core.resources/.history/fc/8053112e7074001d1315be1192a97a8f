@@ -1,0 +1,9 @@
+package onlinejobportal;
+
+public class JobDescription
+{
+	long jobId;
+	String title;
+	String degreeReq;
+	String companyId;
+}

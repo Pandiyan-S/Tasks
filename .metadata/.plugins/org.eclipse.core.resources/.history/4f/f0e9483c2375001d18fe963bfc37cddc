@@ -1,0 +1,94 @@
+package foodorderingsystem;
+
+import java.util.Scanner;
+
+public class FoodRunner
+{
+	public int getInt(Scanner sc)
+	{
+		int choice = 0;
+		boolean truth = true;
+		while(truth)
+		{
+			if(sc.hasNextInt())
+			{
+				choice = sc.nextInt();
+				truth = false;
+			}
+		}
+		return choice;
+	}
+	public long getLong(Scanner sc)
+	{
+		long choice = 0;
+		boolean truth = true;
+		while(truth)
+		{
+			if(sc.hasNextLong())
+			{
+				choice = sc.nextLong();
+				truth = false;
+			}
+		}
+		return choice;
+	}
+	public static void main(String[] args)
+	{
+		Scanner sc = new Scanner(System.in);
+		FoodRunner run = new FoodRunner();
+		FoodLogic logic = new FoodLogic();
+		int choice = 0;
+		while(choice != 3)
+		{
+			System.out.println("Welcome to food ordering system\n");
+			System.out.println("1) Sign up");
+			System.out.println("2) Log in");
+			System.out.println("3) Exit");
+			System.out.println("\nEnter your choice");
+			choice = run.getInt(sc);
+			switch(choice)
+			{
+			case 1:
+				sc.nextLine();
+				System.out.println("Enter your name");
+				String name = sc.nextLine();
+				System.out.println("Enter your age");
+				int age = run.getInt(sc);
+				System.out.println("Enter your email");
+				String email = sc.nextLine();
+				System.out.println("Enter your password");
+				String password = sc.nextLine();
+				System.out.println("Confirm password");
+				String repassword = sc.nextLine();
+				System.out.println("Enter your Phone number");
+				long phone = run.getLong(sc);
+				int len = password.length();
+				if(logic.ifExist())
+				{
+					System.out.println("Accoutn already Existed. Please login");
+				}
+				else if(!password.equals(repassword))
+				{
+					System.out.println("Password does not match confirm password");
+				}
+				else if(len<8 && len>12)
+				{
+					if(len<8)
+					{
+						System.out.println("Password is very short");
+					}
+					else
+					{
+						System.out.println("Password is very long");
+					}
+					System.out.println("Length must be between 8 and 12");
+				}
+				else
+				{
+					
+					System.out.println("You have successfully signed up");
+				}
+			}
+		}
+	}
+}

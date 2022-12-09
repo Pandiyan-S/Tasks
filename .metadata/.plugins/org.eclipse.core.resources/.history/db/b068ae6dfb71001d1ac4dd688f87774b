@@ -1,0 +1,19 @@
+package onlinereservationsystem;
+
+public class UserInfo
+{
+	String useerId;
+	String password;
+	public String getUseerId() {
+		return useerId;
+	}
+	public void setUseerId(String useerId) {
+		this.useerId = useerId;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+}

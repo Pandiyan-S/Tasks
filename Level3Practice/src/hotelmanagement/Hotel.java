@@ -1,0 +1,68 @@
+package hotelmanagement;
+
+public class Hotel
+{
+	private String name;
+	private int rating;
+	private String location;
+	private int maxRooms;
+	private int price;
+	
+	public Hotel()
+	{
+		
+	}
+	public Hotel(String name, int maxRooms, String location, int rating, int price)
+	{
+		this.name = name;
+		this.rating = rating;
+		this.location = location;
+		this.maxRooms = maxRooms;
+		this.price = price;
+	}
+	public String getName()
+	{
+		return name;
+	}
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	public int getRating()
+	{
+		return rating;
+	}
+	public void setRating(int rating)
+	{
+		this.rating = rating;
+	}
+	public String getLocation()
+	{
+		return location;
+	}
+	public void setLocation(String location)
+	{
+		this.location = location;
+	}
+	public int getMaxRooms()
+	{
+		return maxRooms;
+	}
+	public void setMaxRooms(int maxRooms)
+	{
+		this.maxRooms = maxRooms;
+	}
+	public int getPrice()
+	{
+		return price;
+	}
+	public void setPrice(int price)
+	{
+		this.price = price;
+	}
+	@Override
+	public String toString() {
+		return "\nName = " + name + "\nRating = " + rating + "\nLocation = " + location + "\nMaxRooms = " + maxRooms
+				+ "\nPrice = " + price;
+	}
+}

@@ -1,0 +1,18 @@
+package foodorderingsystem;
+
+public class FoodLogic
+{
+
+	public boolean ifExist(String email)
+	{
+		FoodStorage store = new FoodStorage();
+		return store.checkAccount(email);
+	}
+
+	public void addCustomer(Customer cust)
+	{
+		FoodStorage store = new FoodStorage();
+		store.addCustomer(cust);
+	}
+	
+}

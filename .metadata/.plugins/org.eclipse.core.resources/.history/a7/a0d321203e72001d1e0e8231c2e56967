@@ -1,0 +1,103 @@
+package onlinereservationsystem;
+
+import java.io.Serializable;
+
+public class PassengerInfo implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+	String pnr;
+	String name;
+	int age;
+	String idNo;
+	char sex;
+	String coachClass;
+	String berth;
+	int seatNo;
+	public String getPnr() {
+		return pnr;
+	}
+	public void setPnr(String pnr) {
+		this.pnr = pnr;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getIdNo()
+	{
+		return idNo;
+	}
+	public void setIdNo(String idNo)
+	{
+		this.idNo = idNo;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	public int getDateOfBirth()
+	{
+		return age;
+	}
+	public void setDateOfBirth(int dateOfBirth)
+	{
+		this.age = dateOfBirth;
+	}
+	public char getSex()
+	{
+		return sex;
+	}
+	public void setSex(char sex)
+	{
+		this.sex = sex;
+	}
+	public String getCoachClass()
+	{
+		return coachClass;
+	}
+	public void setCoachClass(String coachClass)
+	{
+		this.coachClass = coachClass;
+	}
+	public String getBerth()
+	{
+		return berth;
+	}
+	public void setBerth(String berth)
+	{
+		this.berth = berth;
+	}
+	public int getSeatNo()
+	{
+		return seatNo;
+	}
+	public void setSeatNo(int seatNo)
+	{
+		this.seatNo = seatNo;
+	}
+	@Override
+	public String toString()
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("\nName:");
+		str.append( name);
+		str.append("\nAge:");
+		str.append(age);
+		str.append("\nSex:");
+		str.append(sex);
+		str.append("\nId No:");
+		str.append(idNo);
+		str.append("\nBerth:");
+		str.append( berth);
+		str.append("\nSeat No:");
+		str.append(seatNo);
+		return str.toString();
+	}
+}

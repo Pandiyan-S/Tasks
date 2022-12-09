@@ -1,0 +1,29 @@
+package onlinejobportal;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class LogicalLayer
+{
+	private Map<Long,Applicant> candidates = new HashMap<>();
+	private Map<Long,Company> companies = new HashMap<>();
+	private Map<String,JobDescription> job = new HashMap<>();
+	private Map<Long,Map<String,JobDescription>> Sheduled = new HashMap<>();
+	
+	public void createApplicant(Applicant app)
+	{
+		candidates.put(app.getApplicantId(), app);
+	}
+	public void createCompany(Company comp)
+	{
+		companies.put(comp.getCompanyId(), comp);
+	}
+	public boolean companyExist(long compId)
+	{
+		return companies.containsKey(compId);
+	}
+	public boolean applicantExist(long appId)
+	{
+		return candidates.containsKey(appId);
+	}
+}

@@ -1,0 +1,50 @@
+package virtualclassroom;
+
+public class StudyMaterial
+{
+	long materialId;
+	String postedBy;
+	String topic;
+	String type;
+	String link;
+	public long getMaterialId()
+	{
+		return materialId;
+	}
+	public void setMaterialId(long materialId)
+	{
+		this.materialId = materialId;
+	}
+	public String getPostedBy()
+	{
+		return postedBy;
+	}
+	public void setPostedBy(String postedBy)
+	{
+		this.postedBy = postedBy;
+	}
+	public String getTopic()
+	{
+		return topic;
+	}
+	public void setTopic(String topic)
+	{
+		this.topic = topic;
+	}
+	public String getType()
+	{
+		return type;
+	}
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+	public String getLink()
+	{
+		return link;
+	}
+	public void setLink(String link)
+	{
+		this.link = link;
+	}
+}

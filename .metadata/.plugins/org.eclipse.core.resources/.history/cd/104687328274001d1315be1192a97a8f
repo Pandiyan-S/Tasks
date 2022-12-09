@@ -1,0 +1,17 @@
+package onlinejobportal;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class LogicalLayer
+{
+	private Map<Long,Applicant> candidates = new HashMap<>();
+	private Map<Long,Company> Companies = new HashMap<>();
+	private Map<String,JobDescription> job = new HashMap<>();
+	private Map<Long,Map<String,JobDescription>> Sheduled = new HashMap<>();
+	
+	public void insertcandidate()
+	{
+		
+	}
+}

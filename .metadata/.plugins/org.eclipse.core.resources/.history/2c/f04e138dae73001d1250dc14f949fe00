@@ -1,0 +1,14 @@
+package virtualclassroom;
+
+import java.util.Scanner;
+
+public class ClassroomRunner
+{
+	public static void main(String[] args)
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Press any key to sign in");
+		System.out.println("Press 1 to sign up");
+		
+	}
+}

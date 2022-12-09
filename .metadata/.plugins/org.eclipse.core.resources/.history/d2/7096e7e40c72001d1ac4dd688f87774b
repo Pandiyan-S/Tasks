@@ -1,0 +1,32 @@
+package onlinereservationsystem;
+
+import java.util.HashMap;
+import java.util.Map;
+//import java.util.Scanner;
+
+public class ReservationRunner
+{
+	public static void main(String[] args)
+	{
+		StorageLayer store = new StorageLayer();
+		UserInfo user = new UserInfo();
+		user.setUserId("1");
+		user.setPassword("I@minevitable");
+		Map<String,UserInfo> hm = new HashMap<String,UserInfo>();
+		hm.put(user.getUserId(), user);
+		user = new UserInfo();
+		user.setUserId("2");
+		user.setPassword("Darth^ader");
+		hm.put(user.getUserId(), user);
+		user = new UserInfo();
+		user.setUserId("3");
+		user.setPassword("RaonMiru");
+		hm.put(user.getUserId(), user);
+		store.createUser(hm);
+		/*
+		 * System.out.println("Enter the user Id "); Scanner sc = new
+		 * Scanner(System.in); String userId = sc.nextLine(); store.doesIdExist(userId);
+		 * System.out.println("Enter the Password ");
+		 */
+	}
+}

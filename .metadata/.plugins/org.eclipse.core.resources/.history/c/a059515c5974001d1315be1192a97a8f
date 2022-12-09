@@ -1,0 +1,8 @@
+package virtualclassroom;
+
+public class Doubts
+{
+	Long doubtId;
+	String question;
+	String answer;
+}
